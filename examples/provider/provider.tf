@@ -1,3 +1,3 @@
-provider "scaffolding" {
+provider "sshkey" {
   # example configuration here
 }

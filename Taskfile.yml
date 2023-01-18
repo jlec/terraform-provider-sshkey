@@ -3,10 +3,17 @@ version: "3"
 
 env:
   GO_RUNNER: go
+  GOOS: darwin
+  GOARCH: arm64
   PY_PM: poetry
   PY_RUNNER: poetry run
   PYTESTARGS: -vvl --workers auto
   BLACKARGS: --line-length 128 --check --diff
+
+vars:
+  NAMESPACE: dev
+  TYPE: sshkey
+  VERSION: "0.0.0"
 
 tasks:
   default:
@@ -141,7 +148,7 @@ tasks:
   go-fmt:
     desc: Runs gofumpt
     sources:
-      - './**/*.go'
+      - "./**/*.go"
     cmds:
       - gofumpt -l -w -extra .
 
@@ -155,7 +162,7 @@ tasks:
   go-lint:
     desc: Runs golangci-lint
     sources:
-      - './**/*.go'
+      - "./**/*.go"
     cmds:
       - golangci-lint run
 
@@ -174,6 +181,33 @@ tasks:
     desc: Update dependencies
     cmds:
       - go get -u ./...
+
+  #############################################################################
+  #
+  # Terraform provider
+  #
+  #############################################################################
+  create-provider-dir:
+    desc: Create Provider directory
+    cmds:
+      - mkdir -p ~/.terraform.d/plugins/jlec.de/{{.NAMESPACE}}/{{.TYPE}}/{{.VERSION}}/darwin_arm64
+
+  provider-build:
+    desc: Build project
+    cmds:
+      - go build -v -x -o ./terraform-provider-{{.TYPE}}_{{.VERSION}}_$GOOS_$GOARCH
+
+  provider-install:
+    desc: Install Terraform provider dev version
+    deps:
+      - provider-build
+      - create-provider-dir
+    cmds:
+      - >-
+        install -m 755
+        ./terraform-provider-{{.TYPE}}_{{.VERSION}}_$GOOS_$GOARCH
+        ~/.terraform.d/plugins/jlec.de/{{.NAMESPACE}}/{{.TYPE}}/{{.VERSION}}/darwin_arm64/terraform-provider-{{.TYPE}}_{{.VERSION}}_$GOOS_$GOARCH
+      - rm ./terraform-provider-{{.TYPE}}_{{.VERSION}}_$GOOS_$GOARCH
 
   #############################################################################
   #
