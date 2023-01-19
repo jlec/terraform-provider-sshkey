@@ -4,6 +4,9 @@
 default_stages: [commit]
 exclude: >
   (?x)^(
+  examples/data-sources|
+  examples/provider|
+  examples/resources|
   .vscode/launch.json
   )
 repos:

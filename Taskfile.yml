@@ -9,6 +9,9 @@ env:
   PY_RUNNER: poetry run
   PYTESTARGS: -vvl --workers auto
   BLACKARGS: --line-length 128 --check --diff
+  # TF_ACC_TEMP_DIR: $HOME/tmp/tf_acc
+  # TF_ACC_PROVIDER_NAMESPACE: jlec
+  TF_ACC: "YES"
 
 vars:
   NAMESPACE: dev
@@ -181,6 +184,11 @@ tasks:
     desc: Update dependencies
     cmds:
       - go get -u ./...
+
+  go-docs:
+    desc: Build documentation
+    cmds:
+      - go generate -v ./...
 
   #############################################################################
   #

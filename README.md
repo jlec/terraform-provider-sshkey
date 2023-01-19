@@ -1,9 +1,6 @@
-
-
 # terraform_provider_sshkey
 
 sshkey TF provider
-
 
 ## License
 

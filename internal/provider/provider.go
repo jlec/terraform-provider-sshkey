@@ -7,7 +7,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 // Ensure SSHKeyProvider satisfies various provider interfaces.
@@ -18,17 +17,15 @@ type SSHKeyProvider struct {
 	// version is set to the provider version on release, "dev" when the
 	// provider is built and ran locally, and "test" when running acceptance
 	// testing.
-	version string
+	Version string
 }
 
 // SSHKeyProviderModel describes the provider data model.
-type SSHKeyProviderModel struct {
-	Endpoint types.String `tfsdk:"endpoint"`
-}
+type SSHKeyProviderModel struct{}
 
 func (p *SSHKeyProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
 	resp.TypeName = "sshkey"
-	resp.Version = p.version
+	resp.Version = p.Version
 }
 
 func (p *SSHKeyProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
@@ -47,20 +44,18 @@ func (p *SSHKeyProvider) Configure(ctx context.Context, req provider.ConfigureRe
 
 func (p *SSHKeyProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		NewExampleResource,
+		NewSSHKeyPairResource,
 	}
 }
 
 func (p *SSHKeyProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
-	return []func() datasource.DataSource{
-		NewExampleDataSource,
-	}
+	return []func() datasource.DataSource{}
 }
 
 func New(version string) func() provider.Provider {
 	return func() provider.Provider {
 		return &SSHKeyProvider{
-			version: version,
+			Version: version,
 		}
 	}
 }
