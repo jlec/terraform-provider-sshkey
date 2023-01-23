@@ -5,6 +5,7 @@ import os
 import sys
 
 import requests
+import typer
 
 try:
     from rich import print, print_json
@@ -156,6 +157,9 @@ class TFERelease:
                 sys.exit(1)
 
     def upload_shasums(self):
+        if self.version_data is None:
+            raise TypeError
+
         shas = {
             "shasums-upload": f"terraform-provider-{self.provider}_{self.version}_SHA256SUMS",
             "shasums-sig-upload": f"terraform-provider-{self.provider}_{self.version}_SHA256SUMS.sig",
@@ -168,14 +172,12 @@ class TFERelease:
                     self.get_version()
         # print_json(data=self.version_data)
 
-    def get_provider_platform(self, os, arch) -> dict | None:
+    def get_provider_platform(self, os, arch) -> dict:
         r = requests.get(
             f"{self.provider_endpoint}/{self.provider}/versions/{self.version}/platforms/{os}/{arch}", headers=self.header
         )
-        if r.status_code == 200:
-            return r.json()
-        else:
-            return None
+        r.raise_for_status
+        return r.json()
 
     def create_provider_platform(self, os, arch, filename) -> dict:
         provider_platform = self.get_provider_platform(os, arch)
@@ -202,6 +204,9 @@ class TFERelease:
         return provider_platform["data"]
 
     def upload_provider_platform(self):
+        if self.assets is None:
+            raise TypeError
+
         for asset in self.assets:
             filename = asset["name"]
             split_filename = filename.split("_")
@@ -220,9 +225,13 @@ class TFERelease:
                     r.raise_for_status()
 
 
-if __name__ == "__main__":
+def main():
     cwd = os.path.abspath(os.path.dirname(__file__))
     with open(f"{cwd}/../VERSION") as f:
         version = f.read()
 
     tfe = TFERelease(version)
+
+
+if __name__ == "__main__":
+    typer.run(main)
