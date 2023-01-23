@@ -21,6 +21,8 @@ jobs:
     permissions:
       contents: write
       statuses: write
+    secrets:
+      pat: ${{ secrets.PAT_GITHUB_TOKEN }}
   release-and-clean:
     name: Release the code & clean up
     if: >-
