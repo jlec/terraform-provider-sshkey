@@ -5,7 +5,6 @@ import os
 import sys
 
 import requests
-import typer
 
 try:
     from rich import print, print_json
@@ -225,13 +224,9 @@ class TFERelease:
                     r.raise_for_status()
 
 
-def main():
+if __name__ == "__main__":
     cwd = os.path.abspath(os.path.dirname(__file__))
     with open(f"{cwd}/../VERSION") as f:
         version = f.read()
 
     tfe = TFERelease(version)
-
-
-if __name__ == "__main__":
-    typer.run(main)
