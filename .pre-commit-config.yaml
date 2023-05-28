@@ -35,6 +35,7 @@ repos:
       - id: detect-private-key
       # - id: double-quote-string-fixer
       - id: end-of-file-fixer
+        exclude: "charts/README.md"
       - id: file-contents-sorter
       - id: fix-byte-order-marker
       - id: fix-encoding-pragma
@@ -47,7 +48,7 @@ repos:
       - id: sort-simple-yaml
       - id: trailing-whitespace
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.28.0
+    rev: v1.31.0
     hooks:
       - id: yamllint
   - repo: https://github.com/jumanjihouse/pre-commit-hooks
@@ -58,7 +59,7 @@ repos:
       # - id: fasterer
       - id: forbid-binary
       # - id: forbid-space-in-indent
-      - id: git-check
+      # - id: git-check
       # - id: git-dirty
       # - id: markdownlint
       # - id: protect-first-parent
@@ -70,7 +71,7 @@ repos:
       # - id: script-must-not-have-extension
       - id: shfmt
   - repo: https://github.com/psf/black
-    rev: 22.12.0
+    rev: 23.3.0
     hooks:
       - id: black
   - repo: https://github.com/jlec/pre-commit-cruft
@@ -83,7 +84,7 @@ repos:
     hooks:
       - id: hadolint-docker
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.77.0
+    rev: v1.79.1
     hooks:
       # - id: infracost_breakdown
       - id: terraform_fmt
@@ -97,6 +98,8 @@ repos:
           - --args=--exclude-downloaded-modules
         stages: ["push"]
       - id: terraform_checkov
+        args:
+          - --args=--config-file=.checkov.yaml
         stages: ["push"]
       - id: terrascan
         args:
@@ -105,46 +108,54 @@ repos:
           - --args=--skip-rules="AC_AWS_0207"
         stages: ["push"]
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v2.39.1
+    rev: 3.2.2
     hooks:
       - id: commitizen
         stages:
           - commit-msg
-  - repo: https://github.com/pycqa/isort
-    rev: 5.11.4
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.0.269
     hooks:
-      - id: isort
-        name: isort (python)
-  - repo: https://github.com/asottile/pyupgrade
-    rev: v3.3.1
-    hooks:
-      - id: pyupgrade
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
   - repo: https://github.com/gitguardian/ggshield
-    rev: v1.14.2
+    rev: v1.15.1
     hooks:
       - id: ggshield
         stages: ["push"]
   - repo: https://github.com/golangci/golangci-lint
-    rev: v1.50.1
+    rev: v1.52.2
     hooks:
       - id: golangci-lint
   - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-    rev: v2.5.0
+    rev: v2.9.0
     hooks:
       - id: pretty-format-golang
         args: [--autofix]
+  - repo: https://github.com/Bahjat/pre-commit-golang
+    rev: v1.0.2
+    hooks:
+      - id: go-fmt-import
+      - id: go-vet
+      - id: go-lint
+      - id: go-unit-tests
+      - id: gofumpt # requires github.com/mvdan/gofumpt
+      # - id: go-err-check # requires github.com/kisielk/errcheck
+      - id: go-static-check # install https://staticcheck.io/docs/
+      # - id: go-ruleguard # requires https://github.com/quasilyte/go-ruleguard
+      #   args: [rules/rules.go] # required
   - repo: https://github.com/pappasam/toml-sort
-    rev: v0.22.1
+    rev: v0.23.1
     hooks:
       - id: toml-sort
         args:
           - --in-place
           - --all
   - repo: https://github.com/zricethezav/gitleaks
-    rev: v8.15.2
+    rev: v8.16.3
     hooks:
       - id: gitleaks
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.19.2
+    rev: 0.23.0
     hooks:
       - id: check-github-workflows

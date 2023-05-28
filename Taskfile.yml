@@ -167,7 +167,8 @@ tasks:
     sources:
       - "./**/*.go"
     cmds:
-      - golangci-lint run
+      - golangci-lint --verbose run
+      - staticcheck -f stylish ./...
 
   go-mod:
     desc: Downloads and tidy Go modules
@@ -185,37 +186,15 @@ tasks:
     cmds:
       - go get -u ./...
 
-  go-docs:
-    desc: Build documentation
+  go-vet:
+    desc: Vet go code
     cmds:
-      - go generate -v ./...
+      - go vet ./...
 
-  #############################################################################
-  #
-  # Terraform provider
-  #
-  #############################################################################
-  create-provider-dir:
-    desc: Create Provider directory
+  go-generate:
+    desc: Generate GO docs and stuff
     cmds:
-      - mkdir -p ~/.terraform.d/plugins/jlec.de/{{.NAMESPACE}}/{{.TYPE}}/{{.VERSION}}/darwin_arm64
-
-  provider-build:
-    desc: Build project
-    cmds:
-      - go build -v -x -o ./terraform-provider-{{.TYPE}}_{{.VERSION}}_$GOOS_$GOARCH
-
-  provider-install:
-    desc: Install Terraform provider dev version
-    deps:
-      - provider-build
-      - create-provider-dir
-    cmds:
-      - >-
-        install -m 755
-        ./terraform-provider-{{.TYPE}}_{{.VERSION}}_$GOOS_$GOARCH
-        ~/.terraform.d/plugins/jlec.de/{{.NAMESPACE}}/{{.TYPE}}/{{.VERSION}}/darwin_arm64/terraform-provider-{{.TYPE}}_{{.VERSION}}_$GOOS_$GOARCH
-      - rm ./terraform-provider-{{.TYPE}}_{{.VERSION}}_$GOOS_$GOARCH
+      - go generate ./...
 
   #############################################################################
   #
