@@ -18,7 +18,7 @@ env:
 vars:
   NAMESPACE: dev
   TYPE: sshkey
-  VERSION: "0.0.10"
+  VERSION: "0.0.11"
 
 tasks:
   default:
