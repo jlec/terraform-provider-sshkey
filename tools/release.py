@@ -47,7 +47,7 @@ class TFERelease:
         self.upload_provider_platform()
 
     def get_provider_status(self) -> bool:
-        r = requests.get(f"{self.provider_endpoint}/{self.provider}", headers=self.header)
+        r = requests.get(f"{self.provider_endpoint}/{self.provider}", headers=self.header, timeout=10)
         if r.status_code == 200:
             print(f"Provider '{self.provider}' already created")
             self.provider_data = r.json()["data"]
@@ -65,7 +65,7 @@ class TFERelease:
                 "attributes": {"name": self.provider, "namespace": self.namespace, "registry-name": "private"},
             }
         }
-        r = requests.post(f"{self.api_endpoint}/registry-providers", headers=self.header, json=payload)
+        r = requests.post(f"{self.api_endpoint}/registry-providers", headers=self.header, json=payload, timeout=10)
 
         if r.status_code == 201:
             self.get_provider_status()
@@ -76,16 +76,16 @@ class TFERelease:
             sys.exit(1)
 
     def get_version_status(self) -> bool:
-        r = requests.get(f"{self.provider_endpoint}/{self.provider}/versions/{self.version}", headers=self.header)
+        r = requests.get(f"{self.provider_endpoint}/{self.provider}/versions/{self.version}", headers=self.header, timeout=10)
         if r.status_code == 200:
             print(f"Version '{self.version}' already created")
             self.version_data = r.json()["data"]
             # print_json(data=self.version_data)
             return True
-        else:
-            print(f"Version '{self.version}' not released yet")
-            # print_json(data=j)
-            return False
+
+        print(f"Version '{self.version}' not released yet")
+        # print_json(data=j)
+        return False
 
     def create_version(self):
         payload = {
@@ -94,7 +94,7 @@ class TFERelease:
                 "attributes": {"version": self.version, "key-id": GPG_FINGERPRINT, "protocols": ["5.0"]},
             }
         }
-        r = requests.post(f"{self.provider_endpoint}/{self.provider}/versions", headers=self.header, json=payload)
+        r = requests.post(f"{self.provider_endpoint}/{self.provider}/versions", headers=self.header, json=payload, timeout=10)
 
         if r.status_code == 201:
             self.version_data = r.json()["data"]
@@ -113,7 +113,7 @@ class TFERelease:
             "X-GitHub-Api-Version": "2022-11-28",
         }
         # TODO: ERROR handling
-        r = requests.get(f"{gh_api}/releases/latest", headers=header)
+        r = requests.get(f"{gh_api}/releases/latest", headers=header, timeout=10)
         self.assets = r.json()["assets"]
         # print_json(data=self.assets)
 
@@ -129,7 +129,7 @@ class TFERelease:
                 continue
 
             print(f"Downloading file '{local_filename}'")
-            with requests.get(url, headers=header, stream=True) as r:
+            with requests.get(url, headers=header, stream=True, timeout=10) as r:
                 r.raise_for_status()
                 with open(local_filename, "wb") as f:
                     for chunk in r.iter_content(chunk_size=8192):
@@ -140,12 +140,12 @@ class TFERelease:
 
     def upload_gpg(self):
         api_gpg = "https://app.terraform.io/api/registry/private/v2/gpg-keys"
-        r = requests.get(f"{api_gpg}/{self.namespace}/{GPG_FINGERPRINT}", headers=self.header)
+        r = requests.get(f"{api_gpg}/{self.namespace}/{GPG_FINGERPRINT}", headers=self.header, timeout=10)
         if r.status_code == 404:
-            with open(f"{GPG_FINGERPRINT}.asc") as f:
+            with open(f"{GPG_FINGERPRINT}.asc", encoding="utf-8") as f:
                 gpg_key = f.read()
             payload = {"data": {"type": "gpg-keys", "attributes": {"namespace": self.namespace, "ascii-armor": gpg_key}}}
-            r = requests.post(api_gpg, headers=self.header, json=payload)
+            r = requests.post(api_gpg, headers=self.header, json=payload, timeout=10)
             if r.status_code != 200:
                 print_json(data=r.json())
                 sys.exit(1)
@@ -158,24 +158,26 @@ class TFERelease:
         for k, v in shas.items():
             if k in self.version_data["links"]:
                 with open(f"releases/{v}", "rb") as f:
-                    r = requests.put(self.version_data["links"][k], files={v: f})
+                    r = requests.put(self.version_data["links"][k], files={v: f}, timeout=10)
                     r.raise_for_status()
                     self.get_version_status()
         # print_json(data=self.version_data)
 
     def get_provider_platform(self, os, arch) -> dict:
         r = requests.get(
-            f"{self.provider_endpoint}/{self.provider}/versions/{self.version}/platforms/{os}/{arch}", headers=self.header
+            f"{self.provider_endpoint}/{self.provider}/versions/{self.version}/platforms/{os}/{arch}",
+            headers=self.header,
+            timeout=10,
         )
         if r.status_code == 200:
             return r.json()
-        else:
-            return {}
 
-    def create_provider_platform(self, os, arch, filename) -> dict:
-        provider_platform = self.get_provider_platform(os, arch)
+        return {}
+
+    def create_provider_platform(self, o_s, arch, filename) -> dict:
+        provider_platform = self.get_provider_platform(o_s, arch)
         if "data" not in provider_platform:
-            print(f"Creating platform for '{os}/{arch}'")
+            print(f"Creating platform for '{o_s}/{arch}'")
             with open(f"releases/{filename}", "rb") as f:
                 data = f.read()
                 sha256hash = hashlib.sha256(data).hexdigest()
@@ -183,15 +185,18 @@ class TFERelease:
             payload = {
                 "data": {
                     "type": "registry-provider-version-platforms",
-                    "attributes": {"os": os, "arch": arch, "shasum": sha256hash, "filename": filename},
+                    "attributes": {"os": o_s, "arch": arch, "shasum": sha256hash, "filename": filename},
                 }
             }
             r = requests.post(
-                f"{self.provider_endpoint}/{self.provider}/versions/{self.version}/platforms", headers=self.header, json=payload
+                f"{self.provider_endpoint}/{self.provider}/versions/{self.version}/platforms",
+                headers=self.header,
+                json=payload,
+                timeout=10,
             )
             r.raise_for_status()
 
-        provider_platform = self.get_provider_platform(os, arch)
+        provider_platform = self.get_provider_platform(o_s, arch)
 
         return provider_platform["data"]
 
@@ -210,13 +215,13 @@ class TFERelease:
             if "provider-binary-upload" in pp["links"]:
                 print(f"Uploading '{filename}' to TFC")
                 with open(f"releases/{filename}", "rb") as f:
-                    r = requests.put(pp["links"]["provider-binary-upload"], files={filename: f})
+                    r = requests.put(pp["links"]["provider-binary-upload"], files={filename: f}, timeout=10)
                     r.raise_for_status()
 
 
 if __name__ == "__main__":
     cwd = os.path.abspath(os.path.dirname(__file__))
-    with open(f"{cwd}/../VERSION") as f:
+    with open(f"{cwd}/../VERSION", encoding="utf-8") as f:
         version = f.read()
 
     tfe = TFERelease(version)
