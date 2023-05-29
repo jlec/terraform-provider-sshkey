@@ -1,6 +1,6 @@
 {
   "checkout": null,
-  "commit": "0a4bbe6be63cb6e80a1e3d2def50eef763ac1ee2",
+  "commit": "51911f0df27ffd383315b23955c07dfe3feacbfe",
   "context": {
     "cookiecutter": {
       "_copy_without_render": [
@@ -25,7 +25,7 @@
       "project_support_packer": false,
       "project_support_terraform": true,
       "project_support_terraform_module": false,
-      "project_support_terraform_provider": false
+      "project_support_terraform_provider": true
     }
   },
   "directory": null,
