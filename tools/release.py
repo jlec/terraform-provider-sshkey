@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import hashlib
-import json
 import os
 import sys
 
@@ -175,7 +174,7 @@ class TFERelease:
 
     def create_provider_platform(self, os, arch, filename) -> dict:
         provider_platform = self.get_provider_platform(os, arch)
-        if not "data" in provider_platform:
+        if "data" not in provider_platform:
             print(f"Creating platform for '{os}/{arch}'")
             with open(f"releases/{filename}", "rb") as f:
                 data = f.read()
@@ -191,7 +190,6 @@ class TFERelease:
                 f"{self.provider_endpoint}/{self.provider}/versions/{self.version}/platforms", headers=self.header, json=payload
             )
             r.raise_for_status()
-            j = r.json()
 
         provider_platform = self.get_provider_platform(os, arch)
 
