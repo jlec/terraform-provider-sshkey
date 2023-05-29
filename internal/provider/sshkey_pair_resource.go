@@ -189,60 +189,14 @@ func (r *SSHKeyPairResource) Create(ctx context.Context, req resource.CreateRequ
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-// func (r *SSHKeyPairResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-// 	var data *SSHKeyPairResourceModel
-
-// 		// Read Terraform prior state data into the model
-// 		resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
-
-// 		if resp.Diagnostics.HasError() {
-// 			return
-// 		}
-
-// 		// If applicable, this is a great opportunity to initialize any necessary
-// 		// provider client data and make a call using it.
-// 		// httpResp, err := r.client.Do(httpReq)
-// 		// if err != nil {
-// 		//     resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to read example, got error: %s", err))
-// 		//     return
-// 		// }
-
-// 		// Save updated data into Terraform state
-// 		resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
-// }
-
 // no need to support Read at the moment since the resource is fully within state
 // NOTE: if we support sourcing from files on disk in the future, this will have to be implemented.
 func (r *SSHKeyPairResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	return
 }
-
-// func (r *SSHKeyPairResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-// 	var data *SSHKeyPairResourceModel
-
-// 	// Read Terraform plan data into the model
-// 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
-
-// 	if resp.Diagnostics.HasError() {
-// 		return
-// 	}
-
-// 	// If applicable, this is a great opportunity to initialize any necessary
-// 	// provider client data and make a call using it.
-// 	// httpResp, err := r.client.Do(httpReq)
-// 	// if err != nil {
-// 	//     resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to update example, got error: %s", err))
-// 	//     return
-// 	// }
-
-// 	// Save updated data into Terraform state
-// 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
-// }
 
 // no need to support Read at the moment since the resource is fully within state
 // NOTE: if we support sourcing from files on disk in the future, this will have to be implemented.
 func (r *SSHKeyPairResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	return
 }
 
 func (r *SSHKeyPairResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {

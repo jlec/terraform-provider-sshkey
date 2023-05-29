@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestAccSSHKeyPairResource(t *testing.T) {
@@ -20,25 +20,6 @@ func TestAccSSHKeyPairResource(t *testing.T) {
 					resource.TestCheckResourceAttr("sshkey_pair.test", "bits", "4096"),
 				),
 			},
-			// ImportState testing
-			// {
-			// 	ResourceName:      "sshkey_pair.test",
-			// 	ImportState:       true,
-			// 	ImportStateVerify: true,
-			// 	// This is not normally necessary, but is here because this
-			// 	// example code does not have an actual upstream service.
-			// 	// Once the Read method is able to refresh information from
-			// 	// the upstream service, this can be removed.
-			// 	ImportStateVerifyIgnore: []string{"configurable_attribute"},
-			// },
-			// Update and Read testing
-			// {
-			// 	Config: testAccSSHKeyPairResourceConfig("ed25519"),
-			// 	Check: resource.ComposeAggregateTestCheckFunc(
-			// 		resource.TestCheckResourceAttr("sshkey_pair.test", "comment", "fuzzy"),
-			// 	),
-			// },
-			// Delete testing automatically occurs in TestCase
 		},
 	})
 }
