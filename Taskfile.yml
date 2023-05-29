@@ -162,7 +162,7 @@ tasks:
     sources:
       - "./**/*.go"
     cmds:
-      - $GO_RUNNER install -v -ldflags="-w -s -X main.version=\{\{.GIT_COMMIT\}\}" ./cmd/$GO_NAME
+      - $GO_RUNNER install -v -ldflags="-w -s -X main.version=\{\{.GIT_COMMIT\}\}" ./cmd/${GO_NAME}
 
   go-lint:
     desc: Runs golangci-lint
