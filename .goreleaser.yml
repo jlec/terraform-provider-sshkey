@@ -3,13 +3,10 @@
 # behavior.
 before:
   hooks:
-    # You may remove this if you don't use go modules.
-    - go mod tidy
-    # you may remove this if you don't need go generate
-    - go generate ./...
+    # this is just an example and not a requirement for provider building/publishing
+    - go mod tidy -v
 builds:
-  - binary: "{{ .ProjectName }}_v{{ .Version }}"
-    env:
+  - env:
       # goreleaser does not work with CGO, it could also complicate
       # usage by users in CI/CD systems like Terraform Cloud where
       # they are unable to install libraries.
@@ -32,6 +29,7 @@ builds:
     ignore:
       - goos: darwin
         goarch: "386"
+    binary: "{{ .ProjectName }}_v{{ .Version }}"
 archives:
   - format: zip
     name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
