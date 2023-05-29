@@ -2,6 +2,8 @@
 version: "3"
 
 env:
+  GO_DOCS_DEPS: ""
+  GO_NAME: goer
   GO_RUNNER: go
   GOOS: darwin
   GOARCH: arm64
@@ -156,11 +158,11 @@ tasks:
       - gofumpt -l -w -extra .
 
   go-install:
-    desc: Installs goer
+    desc: Install GO application
     sources:
       - "./**/*.go"
     cmds:
-      - $GO_RUNNER install -v -ldflags="-w -s -X main.version=\{\{.GIT_COMMIT\}\}" ./cmd/goer
+      - $GO_RUNNER install -v -ldflags="-w -s -X main.version=\{\{.GIT_COMMIT\}\}" ./cmd/$GO_NAME
 
   go-lint:
     desc: Runs golangci-lint
@@ -194,7 +196,15 @@ tasks:
   go-generate:
     desc: Generate GO docs and stuff
     cmds:
-      - go generate ./...
+      - cmd: go get $GO_DOCS_DEPS
+        ignore_error: true
+      - cmd: go generate ./...
+      - cmd: pre-commit run -a end-of-file-fixer
+        ignore_error: true
+      - cmd: pre-commit run -a trailing-whitespace
+        ignore_error: true
+      - cmd: pre-commit run -a terraform_docs
+        ignore_error: true
 
   #############################################################################
   #
