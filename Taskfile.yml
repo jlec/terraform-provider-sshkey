@@ -208,7 +208,7 @@ tasks:
   create-provider-dir:
     desc: Create Provider directory
     cmds:
-      - mkdir -p ~/.terraform.d/plugins/jlec.de/${TF_NAMESPACE/${TF_TYPE}/${TF_VERSION}/darwin_arm64
+      - mkdir -p ~/.terraform.d/plugins/jlec.de/${TF_NAMESPACE}/${TF_TYPE}/${TF_VERSION}/darwin_arm64
 
   provider-build:
     desc: Build project
@@ -224,7 +224,7 @@ tasks:
       - >-
         install -m 755
         ./terraform-provider-${TF_TYPE}_${TF_VERSION}_${GOOS}_${GOARCH}
-        ~/.terraform.d/plugins/jlec.de/${TF_NAMESPACE/${TF_TYPE}/${TF_VERSION}/darwin_arm64/terraform-provider-${TF_TYPE}_${TF_VERSION}_${GOOS}_${GOARCH}
+        ~/.terraform.d/plugins/jlec.de/${TF_NAMESPACE}/${TF_TYPE}/${TF_VERSION}/darwin_arm64/terraform-provider-${TF_TYPE}_${TF_VERSION}_${GOOS}_${GOARCH}
 
   #############################################################################
   #
