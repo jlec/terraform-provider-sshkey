@@ -13,7 +13,7 @@ env:
   BLACKARGS: --line-length 128 --check --diff
   TF_NAMESPACE: dev
   TF_TYPE: goer
-  TF_VERSION: "0.0.14"
+  TF_VERSION: "0.0.15"
 
 tasks:
   default:
