@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/caarlos0/sshmarshal v0.1.0
-	github.com/hashicorp/terraform-plugin-framework v1.3.0
+	github.com/hashicorp/terraform-plugin-framework v1.3.1
 	github.com/hashicorp/terraform-plugin-go v0.16.0
 	github.com/hashicorp/terraform-plugin-log v0.9.0
 )
