@@ -24,7 +24,7 @@ name = "terraform_provider_sshkey"
 version = "0.0.15"
 
 [tool.poetry.dependencies]
-ansible = "^8.0.0"
+ansible = "^9.0.1"
 molecule = "^6.0.1"
 netaddr = "^0"
 pytest-testinfra = "^9.0.0"
