@@ -28,7 +28,7 @@ const (
 	sshKeyPass string = ""
 )
 
-func NewSSHKeyPairResource() resource.Resource {
+func NewSSHKeyPairResource() resource.Resource { //nolint:ireturn
 	return &SSHKeyPairResource{}
 }
 
@@ -37,7 +37,7 @@ type SSHKeyPairResource struct{}
 
 // SSHKeyPairResourceModel describes the resource data model.
 type SSHKeyPairResourceModel struct {
-	Id                types.String `tfsdk:"id"`
+	ID                types.String `tfsdk:"id"`
 	Type              types.String `tfsdk:"type"`
 	Bits              types.Int64  `tfsdk:"bits"`
 	Comment           types.String `tfsdk:"comment"`
@@ -47,12 +47,21 @@ type SSHKeyPairResourceModel struct {
 	FingerprintSHA256 types.String `tfsdk:"fingerprint_sha256"`
 }
 
-func (r *SSHKeyPairResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+func (r *SSHKeyPairResource) Metadata(
+	_ context.Context,
+	req resource.MetadataRequest,
+	resp *resource.MetadataResponse,
+) {
 	resp.TypeName = req.ProviderTypeName + "_pair"
 }
 
+//
 //nolint:funlen
-func (r *SSHKeyPairResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *SSHKeyPairResource) Schema(
+	_ context.Context,
+	_ resource.SchemaRequest,
+	resp *resource.SchemaResponse,
+) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
 		MarkdownDescription: "Openssh key resource",
@@ -78,7 +87,7 @@ func (r *SSHKeyPairResource) Schema(ctx context.Context, req resource.SchemaRequ
 				MarkdownDescription: "SSH key type. Supported types are `rsa` and `ed25519`.",
 				Required:            true,
 				Validators: []validator.String{
-					stringvalidator.OneOf(keygen.SshKeyTypesStrings...),
+					stringvalidator.OneOf(keygen.SSHKeyTypesStrings...),
 				},
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
@@ -89,7 +98,7 @@ func (r *SSHKeyPairResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Optional:            true,
 				Computed:            true,
 				Validators: []validator.Int64{
-					int64validator.OneOf(keygen.SshRsaBits...),
+					int64validator.OneOf(keygen.SSHRsaBits...),
 				},
 				PlanModifiers: []planmodifier.Int64{
 					int64planmodifier.RequiresReplace(),
@@ -120,11 +129,20 @@ func (r *SSHKeyPairResource) Schema(ctx context.Context, req resource.SchemaRequ
 	}
 }
 
-func (r *SSHKeyPairResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *SSHKeyPairResource) Configure(
+	_ context.Context,
+	_ resource.ConfigureRequest,
+	_ *resource.ConfigureResponse,
+) {
 }
 
+//
 //nolint:funlen
-func (r *SSHKeyPairResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+func (r *SSHKeyPairResource) Create(
+	ctx context.Context,
+	req resource.CreateRequest,
+	resp *resource.CreateResponse,
+) {
 	var (
 		err    error
 		data   *SSHKeyPairResourceModel
@@ -138,36 +156,36 @@ func (r *SSHKeyPairResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	var t keygen.KeyType
+	var ktyp keygen.KeyType
 
 	switch data.Type.ValueString() {
 	case "rsa":
-		t = keygen.RSA
+		ktyp = keygen.RSA
 	case "ed25519":
-		t = keygen.ED25519
+		ktyp = keygen.ED25519
 	case "ecdsa":
-		t = keygen.ECDSA
+		ktyp = keygen.ECDSA
 	}
 
 	if data.Bits.IsUnknown() {
 		data.Bits = types.Int64Value(keygen.RsaDefaultBits)
 	}
 
-	c := keygen.SSHKeyPairConfig{
+	conf := keygen.SSHKeyPairConfig{
 		Passphrase: []byte(sshKeyPass),
-		Type:       t,
+		Type:       ktyp,
 		Bits:       uint16(data.Bits.ValueInt64()),
 	}
 
 	if data.Comment.IsNull() {
-		c.Comment = keygen.GetSSHKeyComment()
+		conf.Comment = keygen.GetSSHKeyComment()
 	} else {
-		c.Comment = data.Comment.String()
+		conf.Comment = data.Comment.String()
 	}
 
 	// data.Comment = types.StringValue("bar")
 
-	if sshkey, err = keygen.New(&c); err != nil {
+	if sshkey, err = keygen.New(&conf); err != nil {
 		resp.Diagnostics.AddError("Key generation failed", err.Error())
 
 		return
@@ -175,11 +193,11 @@ func (r *SSHKeyPairResource) Create(ctx context.Context, req resource.CreateRequ
 
 	// For the purposes of this example code, hardcoding a response value to
 	// save into the Terraform state.
-	data.Id = types.StringValue(sshkey.SHA256())
+	data.ID = types.StringValue(sshkey.SHA256())
 	data.PrivateKeyPEM = types.StringValue(string(sshkey.PrivateKeyPEM()))
 	data.PublicKey = types.StringValue(string(sshkey.PublicKey()))
-	data.FingerprintMD5 = types.StringValue(string(sshkey.MD5()))
-	data.FingerprintSHA256 = types.StringValue(string(sshkey.SHA256()))
+	data.FingerprintMD5 = types.StringValue(sshkey.MD5())
+	data.FingerprintSHA256 = types.StringValue(sshkey.SHA256())
 
 	// Write logs using the tflog package
 	// Documentation: https://terraform.io/plugin/log
@@ -191,15 +209,27 @@ func (r *SSHKeyPairResource) Create(ctx context.Context, req resource.CreateRequ
 
 // no need to support Read at the moment since the resource is fully within state
 // NOTE: if we support sourcing from files on disk in the future, this will have to be implemented.
-func (r *SSHKeyPairResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+func (r *SSHKeyPairResource) Read(
+	_ context.Context,
+	_ resource.ReadRequest,
+	_ *resource.ReadResponse,
+) {
 }
 
 // no need to support Read at the moment since the resource is fully within state
 // NOTE: if we support sourcing from files on disk in the future, this will have to be implemented.
-func (r *SSHKeyPairResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+func (r *SSHKeyPairResource) Update(
+	_ context.Context,
+	_ resource.UpdateRequest,
+	_ *resource.UpdateResponse,
+) {
 }
 
-func (r *SSHKeyPairResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+func (r *SSHKeyPairResource) Delete(
+	ctx context.Context,
+	req resource.DeleteRequest,
+	resp *resource.DeleteResponse,
+) {
 	var data *SSHKeyPairResourceModel
 
 	// Read Terraform prior state data into the model

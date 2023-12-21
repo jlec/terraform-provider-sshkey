@@ -23,16 +23,28 @@ type SSHKeyProvider struct {
 // SSHKeyProviderModel describes the provider data model.
 type SSHKeyProviderModel struct{}
 
-func (p *SSHKeyProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
+func (p *SSHKeyProvider) Metadata(
+	_ context.Context,
+	_ provider.MetadataRequest,
+	resp *provider.MetadataResponse,
+) {
 	resp.TypeName = "sshkey"
 	resp.Version = p.Version
 }
 
-func (p *SSHKeyProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
+func (p *SSHKeyProvider) Schema(
+	_ context.Context,
+	_ provider.SchemaRequest,
+	resp *provider.SchemaResponse,
+) {
 	resp.Schema = schema.Schema{}
 }
 
-func (p *SSHKeyProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
+func (p *SSHKeyProvider) Configure(
+	ctx context.Context,
+	req provider.ConfigureRequest,
+	resp *provider.ConfigureResponse,
+) {
 	var data SSHKeyProviderModel
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
@@ -42,13 +54,13 @@ func (p *SSHKeyProvider) Configure(ctx context.Context, req provider.ConfigureRe
 	}
 }
 
-func (p *SSHKeyProvider) Resources(ctx context.Context) []func() resource.Resource {
+func (p *SSHKeyProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewSSHKeyPairResource,
 	}
 }
 
-func (p *SSHKeyProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
+func (p *SSHKeyProvider) DataSources(_ context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{}
 }
 

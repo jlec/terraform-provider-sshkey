@@ -7,6 +7,8 @@ import (
 )
 
 func TestNewSSHKeyPair(t *testing.T) {
+	t.Parallel()
+
 	c := keygen.SSHKeyPairConfig{
 		Passphrase: []byte(""),
 		Type:       keygen.RSA,
@@ -18,54 +20,66 @@ func TestNewSSHKeyPair(t *testing.T) {
 }
 
 func TestGenerateEd25519Keys(t *testing.T) {
+	t.Parallel()
+
 	c := keygen.SSHKeyPairConfig{
 		Type: keygen.ED25519,
 	}
-	k, err := keygen.New(&c)
+	key, err := keygen.New(&c)
 
 	t.Run("test generate SSH keys", func(t *testing.T) {
+		t.Parallel()
+
 		if err != nil {
 			t.Errorf("error creating SSH key pair: %v", err)
 		}
 
 		// TODO: is there a good way to validate these? Lengths seem to vary a bit,
 		// so far now we're just asserting that the keys indeed exist.
-		if len(k.PrivateKeyPEM()) == 0 {
+		if len(key.PrivateKeyPEM()) == 0 {
 			t.Error("error creating SSH private key PEM; key is 0 bytes")
 		}
-		if len(k.PublicKey()) == 0 {
+		if len(key.PublicKey()) == 0 {
 			t.Error("error creating SSH public key; key is 0 bytes")
 		}
 	})
 }
 
 func TestGenerateECDSAKeys(t *testing.T) {
+	t.Parallel()
+
 	// Create temp directory for keys
-	c := keygen.SSHKeyPairConfig{
+	conf := keygen.SSHKeyPairConfig{
 		Type: keygen.ECDSA,
 	}
-	k, _ := keygen.New(&c)
+	key, _ := keygen.New(&conf)
 
 	t.Run("test generate SSH keys", func(t *testing.T) {
+		t.Parallel()
+
 		// TODO: is there a good way to validate these? Lengths seem to vary a bit,
 		// so far now we're just asserting that the keys indeed exist.
-		if len(k.PrivateKeyPEM()) == 0 {
+		if len(key.PrivateKeyPEM()) == 0 {
 			t.Error("error creating SSH private key PEM; key is 0 bytes")
 		}
-		if len(k.PublicKey()) == 0 {
+		if len(key.PublicKey()) == 0 {
 			t.Error("error creating SSH public key; key is 0 bytes")
 		}
 	})
 }
 
 func TestGeneratePublicKeyWithEmptyDir(t *testing.T) {
-	for _, keyType := range keygen.SshKeyTypes {
+	t.Parallel()
+
+	for _, keyType := range keygen.SSSHKeyTypes {
 		func(t *testing.T) {
-			c := keygen.SSHKeyPairConfig{Passphrase: nil, Type: keyType}
-			k, err := keygen.New(&c)
+			t.Helper()
+
+			conf := keygen.SSHKeyPairConfig{Passphrase: nil, Type: keyType}
+			key, err := keygen.New(&conf)
 
 			// FIXME: Do some testing
-			_ = k
+			_ = key
 
 			if err != nil {
 				t.Fatalf("error creating SSH key pair: %v", err)
@@ -75,35 +89,41 @@ func TestGeneratePublicKeyWithEmptyDir(t *testing.T) {
 }
 
 func TestGenerateKeyWithPassphrase(t *testing.T) {
-	for _, keyType := range keygen.SshKeyTypes {
-		ph := "testpass"
+	t.Parallel()
+
+	for _, keyType := range keygen.SSSHKeyTypes {
+		tpass := "testpass"
 
 		func(t *testing.T) {
-			c := keygen.SSHKeyPairConfig{
-				Passphrase: []byte(ph),
+			t.Helper()
+
+			conf := keygen.SSHKeyPairConfig{
+				Passphrase: []byte(tpass),
 				Type:       keyType,
 			}
 
-			_, err := keygen.New(&c)
+			_, err := keygen.New(&conf)
 			if err != nil {
 				t.Fatalf("error creating SSH key pair: %v", err)
 			}
 
-			c = keygen.SSHKeyPairConfig{Passphrase: []byte(ph), Type: keyType}
+			conf = keygen.SSHKeyPairConfig{Passphrase: []byte(tpass), Type: keyType}
 
-			k, err := keygen.New(&c)
+			key, err := keygen.New(&conf)
 			if err != nil {
 				t.Fatalf("error reading SSH key pair: %v", err)
 			}
 
 			// FIXME: Do some testing
-			_ = k
+			_ = key
 		}(t)
 	}
 }
 
 func TestReadingKeyWithPassphrase(t *testing.T) {
-	for _, keyType := range keygen.SshKeyTypes {
+	t.Parallel()
+
+	for _, keyType := range keygen.SSSHKeyTypes {
 		c := keygen.SSHKeyPairConfig{Passphrase: []byte("test"), Type: keyType}
 		if _, err := keygen.New(&c); err != nil {
 			t.Fatalf("error reading SSH key pair: %v", err)

@@ -13,8 +13,11 @@ env:
   PY_RUNNER: poetry run
   PYTESTARGS: -vvl --workers auto
   BLACKARGS: --line-length 128 --check --diff
+  # TF_ACC_TEMP_DIR: $HOME/tmp/tf_acc
+  # TF_ACC_PROVIDER_NAMESPACE: jlec
+  TF_ACC: "YES"
   TF_NAMESPACE: dev
-  TF_TYPE: goer
+  TF_TYPE: sshkey
   TF_VERSION: "0.0.15"
 
 tasks:

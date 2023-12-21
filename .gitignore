@@ -342,3 +342,5 @@ nomad/nomad.rc
 # Custom rules
 #
 ###############################################################################
+vendor
+terraform-provider-sshkey_0.0.15_darwin_arm64
