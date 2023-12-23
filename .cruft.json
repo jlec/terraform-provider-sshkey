@@ -23,9 +23,7 @@
       "project_support_terraform_terragrunt": false,
       "project_support_kubernetes": false,
       "tfe_org": "jlec-devops",
-      "_copy_without_render": [
-        "charts/README.md.gotmpl"
-      ],
+      "_copy_without_render": ["charts/README.md.gotmpl"],
       "_go_app_name": "goer",
       "_template": "https://github.com/jlec/cookiecutter-general.git"
     }

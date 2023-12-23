@@ -31,7 +31,12 @@ var version string // goreleaser can also pass the specific commit if you want
 func main() {
 	var debug bool
 
-	flag.BoolVar(&debug, "debug", false, "set to true to run the provider with support for debuggers like delve")
+	flag.BoolVar(
+		&debug,
+		"debug",
+		false,
+		"set to true to run the provider with support for debuggers like delve",
+	)
 	flag.Parse()
 
 	opts := providerserver.ServeOpts{
@@ -40,7 +45,11 @@ func main() {
 		Debug:   debug,
 	}
 
-	err := providerserver.Serve(context.Background(), provider.New(fmt.Sprintf("v%s", version)), opts)
+	err := providerserver.Serve(
+		context.Background(),
+		provider.New(fmt.Sprintf("v%s", version)),
+		opts,
+	)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
