@@ -182,3 +182,7 @@ repos:
       #     - --args=--skip-rules="AC_AWS_0207"
       #     - --args=--verbose
       #   stages: ["push"]
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: "v4.0.0-alpha.8"
+    hooks:
+      - id: prettier
