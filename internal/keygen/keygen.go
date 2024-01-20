@@ -2,6 +2,7 @@
 package keygen
 
 import (
+	"bytes"
 	"crypto"
 	"crypto/ecdsa"
 	"crypto/ed25519"
@@ -31,7 +32,7 @@ const RsaDefaultBits = 4096
 
 //nolint:gochecknoglobals
 var (
-	SSSHKeyTypes       = []KeyType{RSA, ED25519, ECDSA}
+	SSHKeyTypes        = []KeyType{RSA, ED25519, ECDSA}
 	SSHKeyTypesStrings = []string{"rsa", "ed25519", "ecdsa"}
 	SSHRsaBits         = []int64{1024, 2048, 4096}
 )
@@ -226,7 +227,7 @@ func (s *SSHKeyPair) PublicKey() []byte {
 	// serialize public key
 	ak := ssh.MarshalAuthorizedKey(pkey)
 
-	return fmt.Appendf(ak, " %s", s.Comment)
+	return bytes.TrimSpace(fmt.Appendf(bytes.TrimSpace(ak), " %s", s.Comment))
 }
 
 func (s *SSHKeyPair) MD5() string {

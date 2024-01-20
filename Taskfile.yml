@@ -4,7 +4,7 @@
 version: "3"
 
 env:
-  GO_DOCS_DEPS: github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
+  # GO_DOCS_DEPS: github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
   GO_NAME: sshkey
   GO_RUNNER: go
   GOOS: darwin
@@ -202,8 +202,8 @@ tasks:
   go-generate:
     desc: Generate GO docs and stuff
     cmds:
-      - cmd: go get $GO_DOCS_DEPS
-        ignore_error: true
+      # - cmd: go get $GO_DOCS_DEPS
+      #   ignore_error: true
       - cmd: go generate ./...
       - cmd: pre-commit run -a end-of-file-fixer
         ignore_error: true

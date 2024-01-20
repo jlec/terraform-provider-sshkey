@@ -1,6 +1,7 @@
 package keygen_test
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/jlec/terraform-provider-sshkey/internal/keygen"
@@ -42,6 +43,9 @@ func TestGenerateEd25519Keys(t *testing.T) {
 		if len(key.PublicKey()) == 0 {
 			t.Error("error creating SSH public key; key is 0 bytes")
 		}
+		if strings.Contains(string(key.PublicKey()), "\n") {
+			t.Error("Line break in public key")
+		}
 	})
 }
 
@@ -71,7 +75,7 @@ func TestGenerateECDSAKeys(t *testing.T) {
 func TestGeneratePublicKeyWithEmptyDir(t *testing.T) {
 	t.Parallel()
 
-	for _, keyType := range keygen.SSSHKeyTypes {
+	for _, keyType := range keygen.SSHKeyTypes {
 		func(t *testing.T) {
 			t.Helper()
 
@@ -91,7 +95,7 @@ func TestGeneratePublicKeyWithEmptyDir(t *testing.T) {
 func TestGenerateKeyWithPassphrase(t *testing.T) {
 	t.Parallel()
 
-	for _, keyType := range keygen.SSSHKeyTypes {
+	for _, keyType := range keygen.SSHKeyTypes {
 		tpass := "testpass"
 
 		func(t *testing.T) {
@@ -123,7 +127,7 @@ func TestGenerateKeyWithPassphrase(t *testing.T) {
 func TestReadingKeyWithPassphrase(t *testing.T) {
 	t.Parallel()
 
-	for _, keyType := range keygen.SSSHKeyTypes {
+	for _, keyType := range keygen.SSHKeyTypes {
 		c := keygen.SSHKeyPairConfig{Passphrase: []byte("test"), Type: keyType}
 		if _, err := keygen.New(&c); err != nil {
 			t.Fatalf("error reading SSH key pair: %v", err)
