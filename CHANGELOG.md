@@ -1,3 +1,10 @@
+## v0.0.17 (2024-01-20)
+
+### Fix
+
+- ci
+- linebreak in publickey
+
 ## v0.0.16 (2023-12-23)
 
 ### Fix
