@@ -8,6 +8,8 @@
 .trunk/out
 .trunk/plugins
 CHANGELOG.md
+charts/README.md
+charts/templates
 common/.ansible
 deployment/.terragrunt
 deployment/base/README.md
