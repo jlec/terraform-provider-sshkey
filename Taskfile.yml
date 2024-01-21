@@ -18,7 +18,7 @@ env:
   TF_ACC: "YES"
   TF_NAMESPACE: dev
   TF_TYPE: sshkey
-  TF_VERSION: "0.0.17"
+  TF_VERSION: "0.1.0"
 
 tasks:
   default:
