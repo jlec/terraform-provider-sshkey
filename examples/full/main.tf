@@ -34,9 +34,21 @@ resource "local_file" "rsa" {
   file_permission = 0600
 }
 
+resource "local_file" "rsa_pub" {
+  filename        = "id_rsa.pub"
+  content         = sshkey_pair.rsa.public_key
+  file_permission = 0600
+}
+
 resource "local_file" "ed25519" {
   filename        = "id_ed25519"
   content         = sshkey_pair.ed25519.private_key
+  file_permission = 0600
+}
+
+resource "local_file" "ed25519_pub" {
+  filename        = "id_ed25519.pub"
+  content         = sshkey_pair.ed25519.public_key
   file_permission = 0600
 }
 
