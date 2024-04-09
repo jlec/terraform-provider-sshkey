@@ -40,9 +40,11 @@ func TestGenerateEd25519Keys(t *testing.T) {
 		if len(key.PrivateKeyPEM()) == 0 {
 			t.Error("error creating SSH private key PEM; key is 0 bytes")
 		}
+
 		if len(key.PublicKey()) == 0 {
 			t.Error("error creating SSH public key; key is 0 bytes")
 		}
+
 		if strings.Contains(string(key.PublicKey()), "\n") {
 			t.Error("Line break in public key")
 		}
@@ -66,6 +68,7 @@ func TestGenerateECDSAKeys(t *testing.T) {
 		if len(key.PrivateKeyPEM()) == 0 {
 			t.Error("error creating SSH private key PEM; key is 0 bytes")
 		}
+
 		if len(key.PublicKey()) == 0 {
 			t.Error("error creating SSH public key; key is 0 bytes")
 		}

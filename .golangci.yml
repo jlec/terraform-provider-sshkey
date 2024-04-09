@@ -48,3 +48,8 @@ linters-settings:
   wsl:
     # Allow blocks to end with comments.
     allow-trailing-comment: true
+issues:
+  exclude-rules:
+    - path: "internal/provider"
+      linters:
+        - dupl

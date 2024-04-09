@@ -1,3 +1,13 @@
+terraform {
+  required_version = "~>1.4"
+
+  required_providers {
+    turing-pi-bmc = {
+      source  = "jlec.de/dev/sshkey"
+      version = ">=0.1"
+    }
+  }
+}
 provider "sshkey" {
   # example configuration here
 }

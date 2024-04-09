@@ -4,7 +4,6 @@ import (
 	"context"
 	_ "embed"
 	"flag"
-	"fmt"
 	"log"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
@@ -47,7 +46,7 @@ func main() {
 
 	err := providerserver.Serve(
 		context.Background(),
-		provider.New(fmt.Sprintf("v%s", version)),
+		provider.New("v"+version),
 		opts,
 	)
 	if err != nil {

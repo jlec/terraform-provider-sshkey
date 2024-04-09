@@ -52,7 +52,7 @@ type UnsupportedKeyTypeError struct {
 func (e UnsupportedKeyTypeError) Error() string {
 	err := "unsupported key type"
 	if e.Type != "" {
-		err += fmt.Sprintf(": %s", e.Type)
+		err += ": " + e.Type
 	}
 
 	return err
