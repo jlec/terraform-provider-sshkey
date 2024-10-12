@@ -33,7 +33,6 @@ jobs:
       github-token: ${{ secrets.GITHUB_TOKEN }}
   go-build-test:
     name: "GO Build & Test"
-    # trunk-ignore(actionlint/if-cond)
     if: >-
       ${{ github.actor != 'dependabot[bot]' }} &&
       !startsWith(github.event.head_commit.message, 'bump:') &&
@@ -46,7 +45,6 @@ jobs:
 
   dependabot:
     name: "Handle dependabot PR"
-    # trunk-ignore(actionlint/if-cond)
     if: >-
       ${{ github.actor == 'dependabot[bot]' }} &&
       !startsWith(github.event.head_commit.message, 'bump:') &&
@@ -62,7 +60,6 @@ jobs:
 
   ci-generic:
     name: "Run generic CI"
-    # trunk-ignore(actionlint/if-cond)
     if: >-
       ${{ github.actor != 'dependabot[bot]' }} &&
       !startsWith(github.event.head_commit.message, 'bump:') &&
@@ -81,7 +78,6 @@ jobs:
 
   ci-release:
     name: "Run Release CI"
-    # trunk-ignore(actionlint/if-cond)
     if: >-
       ${{ github.actor != 'dependabot[bot]' }} &&
       !startsWith(github.event.head_commit.message, 'bump:') &&

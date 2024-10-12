@@ -334,9 +334,18 @@ deployment/certs
 deployment/ssh.sh
 deployment/templates/nomad.rc
 
+_extensions/
+_output/
+
+.virtual_documents/
+.quarto/
+data/
 dist/
 tmp/
 vendor/
+
+ipynb/.jupyter_cache/
+
 ###############################################################################
 #
 # Custom rules

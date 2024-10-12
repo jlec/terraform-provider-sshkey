@@ -22,7 +22,7 @@ env:
 tasks:
   default:
     cmds:
-      - task -l
+      - cmd: task -l
 
   #############################################################################
   #
@@ -38,21 +38,21 @@ tasks:
   setup-python-env:
     desc: Setup Python environment
     cmds:
-      - $PY_PM update
+      - cmd: $PY_PM update
 
   setup-pre-commit:
     desc: Setup Pre-Commit environment
     cmds:
-      - $PY_RUNNER pre-commit install
-      - $PY_RUNNER pre-commit install --install-hooks
-      - $PY_RUNNER pre-commit install --hook-type commit-msg
-      - $PY_RUNNER pre-commit install --hook-type pre-push
+      - cmd: $PY_RUNNER pre-commit install
+      - cmd: $PY_RUNNER pre-commit install --install-hooks
+      - cmd: $PY_RUNNER pre-commit install --hook-type commit-msg
+      - cmd: $PY_RUNNER pre-commit install --hook-type pre-push
       - task: ansible-init
 
   ansible-init:
     desc: Setup ansible
     cmds:
-      - echo "No Ansible support"
+      - cmd: echo "No Ansible support"
 
   #############################################################################
   #
@@ -62,23 +62,23 @@ tasks:
   release:
     desc: Release MINOR version bump
     cmds:
-      - $PY_RUNNER cz bump --check-consistency --increment MINOR --no-verify
+      - cmd: $PY_RUNNER cz bump --check-consistency --increment MINOR --no-verify
 
   release-major:
     desc: Release MAJOR version bump
     cmds:
-      - $PY_RUNNER cz bump --check-consistency --increment MAJOR --no-verify
+      - cmd: $PY_RUNNER cz bump --check-consistency --increment MAJOR --no-verify
 
   release-patch:
     desc: Release PATCH version bump
     cmds:
-      - $PY_RUNNER cz bump --check-consistency --increment PATCH --no-verify
+      - cmd: $PY_RUNNER cz bump --check-consistency --increment PATCH --no-verify
 
   publish:
     desc: Push to remote
     cmds:
-      - git push -v --progress
-      - git push -v --progress --tags
+      - cmd: git push -v --progress
+      - cmd: git push -v --progress --tags
 
   #############################################################################
   #
@@ -88,23 +88,23 @@ tasks:
   cruft-update:
     desc: Update the cookies
     cmds:
-      - git stash push -m cruft-update
-      - $PY_RUNNER cruft update --allow-untracked-files --skip-apply-ask
-      - if test -d control; then pushd control >/dev/null && task init && popd; fi
-      - if test -d deployment; then pushd deployment >/dev/null && task init && popd; fi
-      - $PY_RUNNER pre-commit run -a pretty-format-json
-      - $PY_RUNNER pre-commit run -a terraform_docs
-      - git stash list | grep -q cruft-update && git stash pop >/dev/null || true
+      - cmd: git stash push -m cruft-update
+      - cmd: $PY_RUNNER cruft update --allow-untracked-files --skip-apply-ask
+      - cmd: if test -d control; then pushd control >/dev/null && task init && popd; fi
+      - cmd: if test -d deployment; then pushd deployment >/dev/null && task init && popd; fi
+      - task: prettier
+      - cmd: $PY_RUNNER pre-commit run -a terraform_docs
+      - cmd: git stash list | grep -q cruft-update && git stash pop >/dev/null || true
 
   cruft-push:
     desc: Push the cookies
     cmds:
-      - 'git ci -a -m "chore(cruft): update to latest cruft state"'
+      - cmd: 'git ci -a -m "chore(cruft): update to latest cruft state"'
 
   cruft-reset:
     desc: Reset cruft
     cmds:
-      - cruft diff | git apply
+      - cmd: cruft diff | git apply
 
   #############################################################################
   #
@@ -114,7 +114,7 @@ tasks:
   prettier:
     desc: Run prettier
     cmds:
-      - prettier -w .
+      - cmd: prettier -w .
   check:
     desc: Run pre-commit
     deps:
@@ -127,19 +127,13 @@ tasks:
     desc: Run pre-commit
     cmds:
       - task: pre-commit
-      - task: trunk
 
   pre-commit:
     desc: Run pre-commit
     cmds:
-      - $PY_RUNNER pre-commit run --hook-stage commit --all-files
-      - $PY_RUNNER pre-commit run --hook-stage push --all-files
-      - $PY_RUNNER pre-commit run --hook-stage manual --all-files
-
-  trunk:
-    desc: Run trunk
-    cmds:
-      - cmd: trunk check --all --fix --exclude trivy
+      - cmd: $PY_RUNNER pre-commit run --hook-stage commit --all-files
+      - cmd: $PY_RUNNER pre-commit run --hook-stage push --all-files
+      - cmd: $PY_RUNNER pre-commit run --hook-stage manual --all-files
 
   test:
     desc: Run pytest
@@ -149,7 +143,7 @@ tasks:
   pytest:
     desc: Run pytest
     cmds:
-      - $PY_RUNNER pytest $PYTESTARGS tests
+      - cmd: $PY_RUNNER pytest $PYTESTARGS tests
   #############################################################################
   #
   # GOLANG options
@@ -160,44 +154,44 @@ tasks:
     sources:
       - "./**/*.go"
     cmds:
-      - gofumpt -l -w -extra .
+      - cmd: gofumpt -l -w -extra .
 
   go-install:
     desc: Install GO application
     sources:
       - "./**/*.go"
     cmds:
-      - $GO_RUNNER install -v -ldflags="-w -s -X main.version=\{\{.GIT_COMMIT\}\}" ./cmd/${GO_NAME}
+      - cmd: $GO_RUNNER install -v -ldflags="-w -s -X main.version=\{\{.GIT_COMMIT\}\}" ./cmd/${GO_NAME}
 
   go-lint:
     desc: Runs golangci-lint
     sources:
       - "./**/*.go"
     cmds:
-      - golangci-lint --verbose run
-      - staticcheck -f stylish ./...
+      - cmd: golangci-lint --verbose run
+      - cmd: staticcheck -f stylish ./...
 
   go-mod:
     desc: Downloads and tidy Go modules
     cmds:
-      - go mod download -x
-      - go mod tidy -v
+      - cmd: go mod download -x
+      - cmd: go mod tidy -v
 
   go-test:
     desc: Runs gotest
     cmds:
-      - grc -es --colour=on go test -v --bench=. --benchmem ./...
+      - cmd: grc -es --colour=on go test -v --bench=. --benchmem ./...
 
   go-update:
     desc: Update dependencies
     cmds:
-      - go get -u ./...
+      - cmd: go get -u ./...
 
   go-vet:
     desc: Vet go code
     cmds:
-      - go mod vendor
-      - go vet ./...
+      - cmd: go mod vendor
+      - cmd: go vet ./...
 
   go-generate:
     desc: Generate GO docs and stuff
@@ -229,12 +223,12 @@ tasks:
   create-provider-dir:
     desc: Create Provider directory
     cmds:
-      - mkdir -p ~/.terraform.d/plugins/jlec.de/${TF_NAMESPACE}/${TF_TYPE}/${TF_VERSION}/darwin_arm64
+      - cmd: mkdir -p ~/.terraform.d/plugins/jlec.de/${TF_NAMESPACE}/${TF_TYPE}/${TF_VERSION}/darwin_arm64
 
   provider-build:
     desc: Build project
     cmds:
-      - go build -v -x -o ./terraform-provider-${TF_TYPE}_${TF_VERSION}_${GOOS}_${GOARCH}
+      - cmd: go build -v -x -o ./terraform-provider-${TF_TYPE}_${TF_VERSION}_${GOOS}_${GOARCH}
 
   provider-install:
     desc: Install Terraform provider dev version
@@ -255,6 +249,6 @@ tasks:
   clean:
     desc: Clean up
     cmds:
-      - rm -rf dist
-      - rm -rf tmp
-      - git clean -fdx
+      - cmd: rm -rf dist
+      - cmd: rm -rf tmp
+      - cmd: git clean -fdx

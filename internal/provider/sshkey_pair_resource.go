@@ -2,6 +2,7 @@ package provider
 
 import (
 	"context"
+	"math"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -171,10 +172,17 @@ func (r *SSHKeyPairResource) Create(
 		data.Bits = types.Int64Value(keygen.RsaDefaultBits)
 	}
 
+	bitsValue := data.Bits.ValueInt64()
+	if bitsValue < 0 || bitsValue > math.MaxUint16 {
+		resp.Diagnostics.AddError("Invalid bits value", "Bits value must be between 0 and 65535")
+
+		return
+	}
+
 	conf := keygen.SSHKeyPairConfig{
 		Passphrase: []byte(sshKeyPass),
 		Type:       ktyp,
-		Bits:       uint16(data.Bits.ValueInt64()),
+		Bits:       uint16(bitsValue),
 	}
 
 	if data.Comment.IsNull() {

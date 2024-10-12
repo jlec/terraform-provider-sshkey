@@ -2,15 +2,11 @@
 .pytest_cache
 .ruff_cache
 .terraform
-.trunk/actions
-.trunk/logs
-.trunk/notifications
-.trunk/out
-.trunk/plugins
 CHANGELOG.md
 charts/README.md
 charts/templates
 common/.ansible
+data
 deployment/.terragrunt
 deployment/base/README.md
 deployment/README.md
