@@ -203,6 +203,7 @@ tasks:
       - cmd: pre-commit run -a trailing-whitespace
         ignore_error: true
       - cmd: prettier -w docs
+        ignore_error: true
       - cmd: pre-commit run -a terraform_docs
         ignore_error: true
 

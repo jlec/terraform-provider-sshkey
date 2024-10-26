@@ -16,7 +16,7 @@ try:
 except ImportError:
     import json
 
-    def print_json(data):
+    def print_json(data) -> None:
         print(json.dumps(data, indent=2))
 
 
@@ -35,7 +35,7 @@ class TFERelease:
     version_data = None
     assets = None
 
-    def __init__(self, version):
+    def __init__(self, version) -> None:
         self.version = version.strip()
         self.token = os.environ.get("TFE_TOKEN")
         self.header = {"Authorization": f"Bearer {self.token}", "Content-Type": "application/vnd.api+json"}
@@ -79,7 +79,7 @@ class TFERelease:
             print_json(data=r.json())
             sys.exit(1)
 
-    def get_version(self):
+    def get_version(self) -> None:
         r = requests.get(f"{self.provider_endpoint}/{self.provider}/versions/{self.version}", headers=self.header, timeout=10)
         if r.status_code == 200:
             print(f"Version '{self.version}' already created")
@@ -90,7 +90,7 @@ class TFERelease:
         print(f"Version '{self.version}' not released yet")
         # print_json(data=j)
 
-    def create_version(self):
+    def create_version(self) -> None:
         self.get_version()
         if self.version_data is not None:
             return
@@ -110,7 +110,7 @@ class TFERelease:
             print_json(data=r.json())
             sys.exit(1)
 
-    def download_github_assets(self):
+    def download_github_assets(self) -> None:
         gh_api = f"https://api.github.com/repos/{self.organisation}/terraform-provider-{self.provider}"
         token = os.environ.get("GITHUB_TOKEN")
         header = {
@@ -143,7 +143,7 @@ class TFERelease:
                         # if chunk:
                         f.write(chunk)
 
-    def upload_gpg(self):
+    def upload_gpg(self) -> None:
         api_gpg = "https://app.terraform.io/api/registry/private/v2/gpg-keys"
         r = requests.get(f"{api_gpg}/{self.namespace}/{GPG_FINGERPRINT}", headers=self.header, timeout=10)
         if r.status_code == 404:
@@ -155,7 +155,7 @@ class TFERelease:
                 print_json(data=r.json())
                 sys.exit(1)
 
-    def upload_shasums(self):
+    def upload_shasums(self) -> None:
         shas = {
             "shasums-upload": f"terraform-provider-{self.provider}_{self.version}_SHA256SUMS",
             "shasums-sig-upload": f"terraform-provider-{self.provider}_{self.version}_SHA256SUMS.sig",
@@ -204,7 +204,7 @@ class TFERelease:
 
         return provider_platform["data"]
 
-    def upload_provider_platform(self):
+    def upload_provider_platform(self) -> None:
         for asset in self.assets:
             filename = asset["name"]
             split_filename = filename.split("_")

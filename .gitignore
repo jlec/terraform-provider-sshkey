@@ -336,6 +336,7 @@ deployment/templates/nomad.rc
 
 _extensions/
 _output/
+_template/
 
 .virtual_documents/
 .quarto/
