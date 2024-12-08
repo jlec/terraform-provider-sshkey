@@ -1,6 +1,6 @@
 {
   "checkout": null,
-  "commit": "96f37db7f3336c7b756e583266a53667265ca63d",
+  "commit": "a29f94213d77f36bd986eae599f20a2590570f05",
   "context": {
     "cookiecutter": {
       "email": "justin@jlec.de",
@@ -25,9 +25,7 @@
       "project_support_terraform_provider": true,
       "project_support_terraform_terragrunt": false,
       "tfe_org": "jlec-devops",
-      "_copy_without_render": [
-        "charts/README.md.gotmpl"
-      ],
+      "_copy_without_render": ["charts/README.md.gotmpl"],
       "_go_app_name": "goer",
       "_template": "https://github.com/jlec/cookiecutter-general.git"
     }
