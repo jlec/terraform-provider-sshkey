@@ -1,10 +1,6 @@
 ---
 linters:
   disable:
-    # deprecated
-    - ifshort
-    - nosnakecase
-    - scopelint
     # We love TODOs
     - godox
     # not sure how to fix things

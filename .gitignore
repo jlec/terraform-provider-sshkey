@@ -327,25 +327,25 @@ poetry.lock
 .facts_cache
 .task/checksum/
 
-common/.ansible
+/common/.ansible
 
-deployment/ansible-inventory
-deployment/certs
-deployment/ssh.sh
-deployment/templates/nomad.rc
+/deployment/ansible-inventory
+/deployment/certs
+/deployment/ssh.sh
+/deployment/templates/nomad.rc
 
 _extensions/
 _output/
 _template/
 
 .virtual_documents/
-.quarto/
-data/
-dist/
-tmp/
-vendor/
+/.quarto/
+/data/
+/dist/
+/tmp/
+/vendor/
 
-ipynb/.jupyter_cache/
+.jupyter_cache/
 
 ###############################################################################
 #

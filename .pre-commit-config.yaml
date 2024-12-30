@@ -98,7 +98,7 @@ repos:
       - id: taplo-lint
       - id: taplo-format
   - repo: https://github.com/zricethezav/gitleaks
-    rev: "v8.21.2"
+    rev: "v8.22.0"
     hooks:
       - id: gitleaks
   - repo: https://github.com/python-jsonschema/check-jsonschema
@@ -133,7 +133,7 @@ repos:
       # - id: go-ruleguard # requires https://github.com/quasilyte/go-ruleguard
       #   args: [rules/rules.go] # required
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: "v1.96.2"
+    rev: "v1.96.3"
     hooks:
       # - id: infracost_breakdown
       # - id: tfupdate
