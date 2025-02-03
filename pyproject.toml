@@ -22,7 +22,7 @@ python = ">=3.11,<4.0"
 
 [tool.poetry.group.dev.dependencies]
 bandit = "^1"
-black = "^24"
+black = "^25"
 bpython = "^0"
 commitizen = "^4"
 cruft = "^2"
