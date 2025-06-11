@@ -1,6 +1,6 @@
 ---
 # https://taskfile.dev
-
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
 env:
@@ -8,13 +8,10 @@ env:
   GO_RUNNER: go
   GOOS: darwin
   GOARCH: arm64
-  PY_PM: poetry
-  PY_RUNNER: poetry run
-  PYTESTARGS: -vvl --workers auto
+  PY_PM: uv
+  PY_RUNNER: uv run
+  PYTESTARGS: -vvl --numprocesses auto
   BLACKARGS: --line-length 128 --check --diff
-  # TF_ACC_TEMP_DIR: $HOME/tmp/tf_acc
-  # TF_ACC_PROVIDER_NAMESPACE: jlec
-  TF_ACC: "YES"
   TF_NAMESPACE: dev
   TF_TYPE: sshkey
   TF_VERSION: "0.1.8"
@@ -32,13 +29,13 @@ tasks:
   setup:
     desc: Setup environment
     cmds:
-      - task: setup-python-env
+      - task: setup-python
       - task: setup-pre-commit
 
-  setup-python-env:
-    desc: Setup Python environment
+  setup-python:
+    desc: Setup Python environment including dev dependencies
     cmds:
-      - cmd: $PY_PM update
+      - cmd: $PY_PM sync --upgrade --dev
 
   setup-pre-commit:
     desc: Setup Pre-Commit environment
@@ -53,7 +50,6 @@ tasks:
     desc: Setup ansible
     cmds:
       - cmd: echo "No Ansible support"
-
   #############################################################################
   #
   # Release management

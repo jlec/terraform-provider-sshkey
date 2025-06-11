@@ -4,16 +4,24 @@
 default_stages: [pre-commit]
 exclude: >
   (?x)^(
-  examples/data-sources|
-  examples/provider|
-  examples/resources|
+  .ansible|
+  .cache|
   .pytest_cache|
   .ruff_cache|
   .terraform|
+  .venv|
   .vscode/launch.json|
-  data
+  common/.ansible|
+  data|
+  tmp
   )
 repos:
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: "v4.6.0"
+    hooks:
+      - id: commitizen
+        stages:
+          - commit-msg
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: "v5.0.0"
     hooks:
@@ -52,14 +60,8 @@ repos:
       - id: requirements-txt-fixer
       - id: sort-simple-yaml
       - id: trailing-whitespace
-  - repo: https://github.com/commitizen-tools/commitizen
-    rev: "v4.1.0"
-    hooks:
-      - id: commitizen
-        stages:
-          - commit-msg
   - repo: https://github.com/adrienverge/yamllint
-    rev: "v1.35.1"
+    rev: "v1.37.0"
     hooks:
       - id: yamllint
   # - repo: https://github.com/jumanjihouse/pre-commit-hooks
@@ -71,6 +73,7 @@ repos:
       - id: check-mailmap
       # - id: fasterer
       - id: forbid-binary
+        exclude: "docs/images/.*"
       # - id: forbid-space-in-indent
       # - id: git-check
       # - id: git-dirty
@@ -83,35 +86,39 @@ repos:
       # - id: script-must-have-extension
       # - id: script-must-not-have-extension
       - id: shfmt
-  - repo: https://github.com/jlec/pre-commit-cruft
-    rev: "v0.1.1"
+  - repo: https://github.com/mxab/pre-commit-trivy
+    rev: v0.15.0
     hooks:
-      - id: cruft
-        stages: ["pre-push"]
-  - repo: https://github.com/hadolint/hadolint
-    rev: "v2.13.1-beta"
-    hooks:
-      - id: hadolint-docker
+      - id: trivyfs-docker
+        args:
+          - --config
+          - .trivy.yml
+          - --show-suppressed
+          - --severity
+          - HIGH,CRITICAL
+          - . # last arg indicates the path/file to scan
+      - id: trivyconfig-docker
+        args:
+          - --config
+          - .trivy.yml
+          - --severity
+          - HIGH,CRITICAL
+          - . # last arg indicates the path/file to scan
   - repo: https://github.com/ComPWA/taplo-pre-commit
     rev: "v0.9.3"
     hooks:
       - id: taplo-lint
       - id: taplo-format
   - repo: https://github.com/zricethezav/gitleaks
-    rev: "v8.22.0"
+    rev: "v8.24.3"
     hooks:
       - id: gitleaks
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: "0.30.0"
+    rev: "0.33.0"
     hooks:
       - id: check-github-workflows
-  - repo: https://github.com/gitguardian/ggshield
-    rev: "v1.34.0"
-    hooks:
-      - id: ggshield
-        stages: ["pre-push"]
   - repo: https://github.com/golangci/golangci-lint
-    rev: "v1.62.2"
+    rev: "v2.1.1"
     hooks:
       - id: golangci-lint-full
         args: ["--timeout", "2m"]
@@ -121,7 +128,7 @@ repos:
       - id: pretty-format-golang
         args: [--autofix]
   - repo: https://github.com/Bahjat/pre-commit-golang
-    rev: "v1.0.3"
+    rev: "v1.0.5"
     hooks:
       - id: go-fmt-import
       - id: go-vet
@@ -133,7 +140,7 @@ repos:
       # - id: go-ruleguard # requires https://github.com/quasilyte/go-ruleguard
       #   args: [rules/rules.go] # required
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: "v1.96.3"
+    rev: "v1.98.1"
     hooks:
       # - id: infracost_breakdown
       # - id: tfupdate
@@ -160,3 +167,13 @@ repos:
       #     - --args=--skip-rules="AC_AWS_0207"
       #     - --args=--verbose
       #   stages: ["pre-push"]
+  - repo: https://github.com/gitguardian/ggshield
+    rev: "v1.38.1"
+    hooks:
+      - id: ggshield
+        stages: ["pre-push"]
+  - repo: https://github.com/jlec/pre-commit-cruft
+    rev: "v0.1.1"
+    hooks:
+      - id: cruft
+        stages: ["pre-push"]

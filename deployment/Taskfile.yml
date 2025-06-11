@@ -4,8 +4,8 @@
 version: "3"
 
 env:
-  PY_PM: poetry
-  PY_RUNNER: poetry run
+  PY_PM: uv
+  PY_RUNNER: uv run
   # yamllint disable-line rule:empty-values
   TF_AUTOAPPROVE:
   # TF_AUTOAPPROVE: -auto-approve

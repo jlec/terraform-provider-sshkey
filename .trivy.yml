@@ -1,0 +1,15 @@
+---
+cache:
+  dir: "~/.trivy-cache"
+
+ignorefile: ".trivyignore.yml"
+
+insecure: true
+
+scan:
+  parallel: 8
+  skip-dirs:
+    - .ansible
+    - .cache
+    - .venv
+    - common/.ansible

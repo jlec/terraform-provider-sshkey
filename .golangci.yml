@@ -1,51 +1,147 @@
 ---
+version: "2"
 linters:
+  enable:
+    - asasalint
+    - asciicheck
+    - bidichk
+    - bodyclose
+    - canonicalheader
+    - containedctx
+    - contextcheck
+    - copyloopvar
+    - cyclop
+    - decorder
+    - dogsled
+    - dupl
+    - dupword
+    - durationcheck
+    - err113
+    - errchkjson
+    - errname
+    - errorlint
+    - exptostd
+    - fatcontext
+    - forcetypeassert
+    - funlen
+    - ginkgolinter
+    - gocheckcompilerdirectives
+    - gochecknoglobals
+    - gochecksumtype
+    - gocognit
+    - goconst
+    - gocritic
+    - gocyclo
+    - godot
+    - goheader
+    - gomoddirectives
+    - gomodguard
+    - goprintffuncname
+    - gosec
+    - gosmopolitan
+    - grouper
+    - iface
+    - importas
+    - inamedparam
+    - interfacebloat
+    - intrange
+    - ireturn
+    - lll
+    - loggercheck
+    - maintidx
+    - makezero
+    - mirror
+    - misspell
+    - mnd
+    - musttag
+    - nakedret
+    - nestif
+    - nilerr
+    - nilnesserr
+    - nilnil
+    - nlreturn
+    - noctx
+    - nolintlint
+    - nonamedreturns
+    - nosprintfhostport
+    - paralleltest
+    - perfsprint
+    - prealloc
+    - predeclared
+    - promlinter
+    - protogetter
+    - reassign
+    - recvcheck
+    - revive
+    - rowserrcheck
+    - sloglint
+    - spancheck
+    - sqlclosecheck
+    - staticcheck
+    - tagalign
+    - tagliatelle
+    - testableexamples
+    - testifylint
+    - testpackage
+    - thelper
+    - tparallel
+    - unconvert
+    - unparam
+    - usestdlibvars
+    - usetesting
+    - varnamelen
+    - wastedassign
+    - whitespace
+    - wrapcheck
+    - wsl
+    - zerologlint
   disable:
-    # We love TODOs
-    - godox
-    # not sure how to fix things
-    - forbidigo
-    # Too crazy to use
     - depguard
     - exhaustive
     - exhaustruct
+    - forbidigo
     - gochecknoinits
-  presets:
-    - bugs
-    - comment
-    - complexity
-    - error
-    - format
-    - import
-    - metalinter
-    - module
-    - performance
-    - sql
-    - style
-    - test
-    - unused
-  # Run only fast linters from enabled linters set (first run won't be fast)
-  # Default: false
-  # fast: true
-linters-settings:
-  lll:
-    line-length: 128
-  varnamelen:
-    ignore-decls:
-      - c echo.Context
-      - const C
-      - e error
-      - i int
-      - m map[string]int
-      - ok bool
-      - s string
-      - T any
-      - t testing.T
-  wsl:
-    # Allow blocks to end with comments.
-    allow-trailing-comment: true
-issues:
-  exclude-rules:
-    - path: "internal/provider"
-      linters:
-        - dupl
+    - godox
+  settings:
+    lll:
+      line-length: 128
+    varnamelen:
+      ignore-decls:
+        - c echo.Context
+        - const C
+        - e error
+        - i int
+        - m map[string]int
+        - ok bool
+        - s string
+        - T any
+        - t testing.T
+    wsl:
+      allow-trailing-comment: true
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    rules:
+      - linters:
+          - dupl
+        path: internal/provider
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  enable:
+    - gci
+    - gofmt
+    - gofumpt
+    - goimports
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
