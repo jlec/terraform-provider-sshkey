@@ -13,7 +13,7 @@ license = "Apache-2.0"
 name = "terraform_provider_sshkey"
 readme = "README.md"
 requires-python = ">=3.12,<4.0"
-version = "0.1.8"
+version = "0.1.9"
 
 [[project.authors]]
 email = "justin@jlec.de"
@@ -26,7 +26,7 @@ line-length = 128
 name = "cz_conventional_commits"
 tag_format = "v$version"
 update_changelog_on_bump = true
-version = "0.1.8"
+version = "0.1.9"
 version_files = ["VERSION", "pyproject.toml:version"]
 
 [tool.poetry]
