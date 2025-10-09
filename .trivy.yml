@@ -1,6 +1,6 @@
 ---
 cache:
-  dir: "~/.trivy-cache"
+  dir: "/tmp/.trivy-cache"
 
 ignorefile: ".trivyignore.yml"
 
@@ -11,5 +11,12 @@ scan:
   skip-dirs:
     - .ansible
     - .cache
+    - .pytest_cache
+    - .ruff_cache
+    - .terraform
     - .venv
     - common/.ansible
+    - common/.terraform
+    - data
+    - logs
+    - tmp

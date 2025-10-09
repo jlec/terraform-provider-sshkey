@@ -27,6 +27,7 @@ poetry.lock
 _extensions/
 _output/
 _template/
+logs/
 
 .virtual_documents/
 /.quarto/
@@ -41,12 +42,35 @@ _template/
 
 /deployment/.terragrunt
 !/deployment/*/terraform.tfvars
-/deployment/*/.terragrunt-cache
 !examples/terraform.tfvars
 .terraform.lock.hcl
 
+###############################################################################
+# COPY OF THE NOT BROKEN macOS gitignore
+###############################################################################
+# General
 .DS_Store
+.AppleDouble
+.LSOverride
 
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
 
 ###############################################################################
 #
@@ -66,11 +90,13 @@ _template/
 # Ignore the default terragrunt cache directory
 # https://terragrunt.gruntwork.io/docs/features/caching/
 .terragrunt-cache
+
 ###############################################################################
 # Global/Ansible gitignore
 ###############################################################################
 *.retry
 .ansible/
+
 ###############################################################################
 # Global/Backup gitignore
 ###############################################################################
@@ -79,6 +105,7 @@ _template/
 *.ori
 *.orig
 *.tmp
+
 ###############################################################################
 # Global/JetBrains gitignore
 ###############################################################################
@@ -155,16 +182,23 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-# Editor-based Rest Client
+# Editor-based HTTP Client
 .idea/httpRequests
+http-client.private.env.json
 
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
+
+# Apifox Helper cache
+.idea/.cache/.Apifox_Helper
+.idea/ApifoxUploaderProjectSetting.xml
+
 ###############################################################################
 # Global/Patch gitignore
 ###############################################################################
 *.orig
 *.rej
+
 ###############################################################################
 # Global/VisualStudioCode gitignore
 ###############################################################################
@@ -174,12 +208,11 @@ fabric.properties
 !.vscode/launch.json
 !.vscode/extensions.json
 !.vscode/*.code-snippets
-
-# Local History for Visual Studio Code
-.history/
+!*.code-workspace
 
 # Built Visual Studio Code Extensions
 *.vsix
+
 ###############################################################################
 # Go gitignore
 ###############################################################################
@@ -215,12 +248,13 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
+
 ###############################################################################
 # Python gitignore
 ###############################################################################
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*.py[cod]
+*.py[codz]
 *$py.class
 
 # C extensions
@@ -266,7 +300,7 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *.cover
-*.py,cover
+*.py.cover
 .hypothesis/
 .pytest_cache/
 cover/
@@ -330,13 +364,19 @@ ipython_config.py
 
 # pdm
 #   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
+#   pdm recommends including project-wide configuration in pdm.toml, but excluding .pdm-python.
+#   https://pdm-project.org/en/latest/usage/project/#working-with-version-control
 #pdm.lock
-#   pdm stores project-wide configurations in .pdm.toml, but it is recommended to not include it
-#   in version control.
-#   https://pdm.fming.dev/latest/usage/project/#working-with-version-control
-.pdm.toml
+#pdm.toml
 .pdm-python
 .pdm-build/
+
+# pixi
+#   Similar to Pipfile.lock, it is generally recommended to include pixi.lock in version control.
+#pixi.lock
+#   Pixi creates a virtual environment in the .pixi directory, just like venv module creates one
+#   in the .venv directory. It is recommended not to include this directory in version control.
+.pixi
 
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
 __pypackages__/
@@ -350,6 +390,7 @@ celerybeat.pid
 
 # Environments
 .env
+.envrc
 .venv
 env/
 venv/
@@ -407,12 +448,14 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-# Cursor
-#  Cursor is an AI-powered code editor. `.cursorignore` specifies files/directories to
-#  exclude from AI features like autocomplete and code analysis. Recommended for sensitive data
-#  refer to https://docs.cursor.com/context/ignore-files
-.cursorignore
-.cursorindexingignore
+# Marimo
+marimo/_static/
+marimo/_lsp/
+__marimo__/
+
+# Streamlit
+.streamlit/secrets.toml
+
 ###############################################################################
 # Terraform gitignore
 ###############################################################################
@@ -453,3 +496,25 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+# Optional: ignore graph output files generated by `terraform graph`
+# *.dot
+
+# Optional: ignore plan files saved before destroying Terraform configuration
+# Uncomment the line below if you want to ignore planout files.
+# planout
+###############################################################################
+#
+# Global includes
+#
+###############################################################################
+!/deployment/*/terraform.tfvars
+!examples/terraform.tfvars
+
+!.envrc
+
+###############################################################################
+#
+# Custom rules
+#
+###############################################################################

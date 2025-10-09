@@ -6,6 +6,7 @@ exclude: >
   (?x)^(
   .ansible|
   .cache|
+  .gitignore|
   .pytest_cache|
   .ruff_cache|
   .terraform|
@@ -17,13 +18,13 @@ exclude: >
   )
 repos:
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: "v4.6.0"
+    rev: "v4.8.3"
     hooks:
       - id: commitizen
         stages:
           - commit-msg
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: "v5.0.0"
+    rev: "v6.0.0"
     hooks:
       - id: check-added-large-files
       - id: check-ast
@@ -51,8 +52,6 @@ repos:
         exclude: "charts/README.md"
       - id: file-contents-sorter
       - id: fix-byte-order-marker
-      - id: fix-encoding-pragma
-        args: ["--remove"]
       - id: forbid-new-submodules
       - id: mixed-line-ending
       - id: name-tests-test
@@ -61,7 +60,7 @@ repos:
       - id: sort-simple-yaml
       - id: trailing-whitespace
   - repo: https://github.com/adrienverge/yamllint
-    rev: "v1.37.0"
+    rev: "v1.37.1"
     hooks:
       - id: yamllint
   # - repo: https://github.com/jumanjihouse/pre-commit-hooks
@@ -90,6 +89,7 @@ repos:
     rev: v0.15.0
     hooks:
       - id: trivyfs-docker
+        stages: ["pre-push"]
         args:
           - --config
           - .trivy.yml
@@ -98,6 +98,7 @@ repos:
           - HIGH,CRITICAL
           - . # last arg indicates the path/file to scan
       - id: trivyconfig-docker
+        stages: ["pre-push"]
         args:
           - --config
           - .trivy.yml
@@ -110,25 +111,25 @@ repos:
       - id: taplo-lint
       - id: taplo-format
   - repo: https://github.com/zricethezav/gitleaks
-    rev: "v8.24.3"
+    rev: "v8.28.0"
     hooks:
       - id: gitleaks
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: "0.33.0"
+    rev: "0.33.3"
     hooks:
       - id: check-github-workflows
   - repo: https://github.com/golangci/golangci-lint
-    rev: "v2.1.1"
+    rev: "v2.4.0"
     hooks:
       - id: golangci-lint-full
         args: ["--timeout", "2m"]
   - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-    rev: "v2.14.0"
+    rev: "v2.15.0"
     hooks:
       - id: pretty-format-golang
         args: [--autofix]
   - repo: https://github.com/Bahjat/pre-commit-golang
-    rev: "v1.0.5"
+    rev: "v1.0.6"
     hooks:
       - id: go-fmt-import
       - id: go-vet
@@ -140,7 +141,7 @@ repos:
       # - id: go-ruleguard # requires https://github.com/quasilyte/go-ruleguard
       #   args: [rules/rules.go] # required
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: "v1.98.1"
+    rev: "v1.100.0"
     hooks:
       # - id: infracost_breakdown
       # - id: tfupdate
@@ -156,6 +157,9 @@ repos:
         stages: ["pre-push"]
       - id: terraform_tflint
       - id: terraform_trivy
+        args:
+          - --args=--config=.trivy.yml
+          - --args=--severity=HIGH,CRITICAL
         stages: ["pre-push"]
       - id: terraform_checkov
         stages: ["pre-push"]
@@ -168,7 +172,7 @@ repos:
       #     - --args=--verbose
       #   stages: ["pre-push"]
   - repo: https://github.com/gitguardian/ggshield
-    rev: "v1.38.1"
+    rev: "v1.43.0"
     hooks:
       - id: ggshield
         stages: ["pre-push"]
