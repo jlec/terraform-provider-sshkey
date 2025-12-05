@@ -1,6 +1,6 @@
 [project]
 name = "terraform_provider_sshkey"
-version = "0.1.9"
+version = "0.1.10"
 description = "sshkey TF provider"
 readme = "README.md"
 requires-python = ">=3.12,<4.0"
@@ -25,7 +25,7 @@ dev = [
 name = "cz_conventional_commits"
 tag_format = "v$version"
 update_changelog_on_bump = true
-version = "0.1.9"
+version = "0.1.10"
 version_files = [
   "VERSION",
   "pyproject.toml:version",
