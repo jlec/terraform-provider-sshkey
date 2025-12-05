@@ -29,6 +29,7 @@ version = "0.1.9"
 version_files = [
   "VERSION",
   "pyproject.toml:version",
+  "Taskfile.yml:TF_VERSION",
 ]
 
 [tool.ruff]

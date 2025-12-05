@@ -55,7 +55,7 @@ func main() {
 
 	opts := providerserver.ServeOpts{
 		// TODO: Update this string with the published name of your provider.
-		Address: "registry.terraform.io/jlec/sshkey",
+		Address: "registry.terraform.io/providers/jlec/sshkey",
 		Debug:   debug,
 	}
 
