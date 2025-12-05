@@ -10,11 +10,9 @@ env:
   GOARCH: arm64
   PY_PM: uv
   PY_RUNNER: uv run
-  PYTESTARGS: -vvl --numprocesses auto
-  BLACKARGS: --line-length 128 --check --diff
   TF_NAMESPACE: dev
   TF_TYPE: sshkey
-  TF_VERSION: "0.1.8"
+  TF_VERSION: "0.1.10"
 
 tasks:
   default:
@@ -139,7 +137,7 @@ tasks:
   pytest:
     desc: Run pytest
     cmds:
-      - cmd: $PY_RUNNER pytest $PYTESTARGS tests
+      - cmd: $PY_RUNNER pytest
   #############################################################################
   #
   # GOLANG options

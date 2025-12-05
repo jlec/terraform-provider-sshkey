@@ -9,7 +9,7 @@ env:
   # yamllint disable-line rule:empty-values
   TF_AUTOAPPROVE:
   # TF_AUTOAPPROVE: -auto-approve
-  TERRAFORM_EXEC: terraform
+  TERRAFORM_EXEC: tofu
 
 tasks:
   default:

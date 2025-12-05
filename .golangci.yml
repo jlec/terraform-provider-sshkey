@@ -1,6 +1,24 @@
 ---
-version: "2"
+formatters:
+  enable:
+    - gci
+    - gofmt
+    - gofumpt
+    - goimports
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
 linters:
+  disable:
+    - depguard
+    - exhaustive
+    - exhaustruct
+    - forbidigo
+    - gochecknoinits
+    - godox
   enable:
     - asasalint
     - asciicheck
@@ -93,15 +111,23 @@ linters:
     - wastedassign
     - whitespace
     - wrapcheck
-    - wsl
+    - wsl_v5
     - zerologlint
-  disable:
-    - depguard
-    - exhaustive
-    - exhaustruct
-    - forbidigo
-    - gochecknoinits
-    - godox
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    rules:
+      - linters:
+          - dupl
+        path: internal/provider
   settings:
     lll:
       line-length: 128
@@ -116,32 +142,8 @@ linters:
         - s string
         - T any
         - t testing.T
-    wsl:
-      allow-trailing-comment: true
-  exclusions:
-    generated: lax
-    presets:
-      - comments
-      - common-false-positives
-      - legacy
-      - std-error-handling
-    rules:
-      - linters:
-          - dupl
-        path: internal/provider
-    paths:
-      - third_party$
-      - builtin$
-      - examples$
-formatters:
-  enable:
-    - gci
-    - gofmt
-    - gofumpt
-    - goimports
-  exclusions:
-    generated: lax
-    paths:
-      - third_party$
-      - builtin$
-      - examples$
+    wsl_v5:
+      allow-first-in-block: true
+      allow-whole-block: false
+      branch-max-lines: 2
+version: "2"

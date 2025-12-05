@@ -1,6 +1,8 @@
 ---
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
+default_language_version:
+  python: python3.14
 default_stages: [pre-commit]
 exclude: >
   (?x)^(
@@ -18,7 +20,7 @@ exclude: >
   )
 repos:
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: "v4.8.3"
+    rev: "v4.10.0"
     hooks:
       - id: commitizen
         stages:
@@ -86,40 +88,35 @@ repos:
       # - id: script-must-not-have-extension
       - id: shfmt
   - repo: https://github.com/mxab/pre-commit-trivy
-    rev: v0.15.0
+    rev: v0.16.0
     hooks:
       - id: trivyfs-docker
         stages: ["pre-push"]
         args:
           - --config
           - .trivy.yml
-          - --show-suppressed
-          - --severity
-          - HIGH,CRITICAL
           - . # last arg indicates the path/file to scan
       - id: trivyconfig-docker
         stages: ["pre-push"]
         args:
           - --config
           - .trivy.yml
-          - --severity
-          - HIGH,CRITICAL
           - . # last arg indicates the path/file to scan
-  - repo: https://github.com/ComPWA/taplo-pre-commit
-    rev: "v0.9.3"
+  - repo: https://github.com/tombi-toml/tombi-pre-commit
+    rev: "v0.7.0"
     hooks:
-      - id: taplo-lint
-      - id: taplo-format
+      - id: tombi-format
+      - id: tombi-lint
   - repo: https://github.com/zricethezav/gitleaks
-    rev: "v8.28.0"
+    rev: "v8.30.0"
     hooks:
       - id: gitleaks
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: "0.33.3"
+    rev: "0.35.0"
     hooks:
       - id: check-github-workflows
   - repo: https://github.com/golangci/golangci-lint
-    rev: "v2.4.0"
+    rev: "v2.7.1"
     hooks:
       - id: golangci-lint-full
         args: ["--timeout", "2m"]
@@ -140,28 +137,23 @@ repos:
       - id: go-static-check # install https://staticcheck.io/docs/
       # - id: go-ruleguard # requires https://github.com/quasilyte/go-ruleguard
       #   args: [rules/rules.go] # required
-  - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: "v1.100.0"
+  - repo: https://github.com/tofuutils/pre-commit-opentofu
+    rev: "v2.2.2"
     hooks:
-      # - id: infracost_breakdown
-      # - id: tfupdate
-      - id: terraform_docs
+      - id: tofu_docs
         args:
           - --hook-config=--add-to-existing-file=true
-      - id: terraform_fmt
-      - id: terraform_validate
-      - id: terraform_providers_lock
+      - id: tofu_fmt
+      - id: tofu_validate
+      - id: tofu_providers_lock
         args:
           - --hook-config=--mode=always-regenerate-lockfile
           - --args=-platform=darwin_arm64
         stages: ["pre-push"]
-      - id: terraform_tflint
-      - id: terraform_trivy
-        args:
-          - --args=--config=.trivy.yml
-          - --args=--severity=HIGH,CRITICAL
+      - id: tofu_tflint
+      - id: tofu_trivy
         stages: ["pre-push"]
-      - id: terraform_checkov
+      - id: tofu_checkov
         stages: ["pre-push"]
       # excluded until https://github.com/tenable/terrascan/issues/1390 is resolved
       # - id: terrascan
@@ -172,12 +164,12 @@ repos:
       #     - --args=--verbose
       #   stages: ["pre-push"]
   - repo: https://github.com/gitguardian/ggshield
-    rev: "v1.43.0"
+    rev: "v1.45.0"
     hooks:
       - id: ggshield
         stages: ["pre-push"]
   - repo: https://github.com/jlec/pre-commit-cruft
-    rev: "v0.1.1"
+    rev: "v0.1.2"
     hooks:
       - id: cruft
         stages: ["pre-push"]

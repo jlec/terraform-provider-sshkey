@@ -1,22 +1,32 @@
 ---
 cache:
-  dir: "/tmp/.trivy-cache"
+  dir: /tmp/trivy-cache
 
-ignorefile: ".trivyignore.yml"
+debug: true
 
 insecure: true
 
 scan:
+  disable-telemetry: false
   parallel: 8
+  show-suppressed: true
   skip-dirs:
     - .ansible
     - .cache
+    - .mypy_cache
+    - .pre-commit-trivy-cache
     - .pytest_cache
     - .ruff_cache
     - .terraform
     - .venv
     - common/.ansible
     - common/.terraform
+    - deployment/.terraform
     - data
     - logs
     - tmp
+  skip-version-check: true
+
+severity:
+  - HIGH
+  - CRITICAL

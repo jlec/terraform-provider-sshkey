@@ -14,27 +14,30 @@ email = "justin@jlec.de"
 [dependency-groups]
 dev = [
   "bpython>=0.25",
+  "ptpython>=3.0.31",
   "pytest>=8.3.5",
+  "pytest-asyncio>=1.2.0",
   "pytest-clarity>=1.0.1",
   "pytest-xdist>=3.6.1",
 ]
-
-[tool.black]
-line-length = 128
 
 [tool.commitizen]
 name = "cz_conventional_commits"
 tag_format = "v$version"
 update_changelog_on_bump = true
 version = "0.1.9"
-version_files = ["VERSION", "pyproject.toml:version"]
-
-[tool.poetry]
-package-mode = false
+version_files = [
+  "VERSION",
+  "pyproject.toml:version",
+]
 
 [tool.ruff]
-exclude = ["obsolete"]
 line-length = 128
+target-version = "py314"
+
+[tool.ruff.format]
+indent-style = "space"
+quote-style = "double"
 
 [tool.ruff.lint]
 ignore = ["B008", "C901"]
