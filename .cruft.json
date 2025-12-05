@@ -28,9 +28,11 @@
       "project_support_terraform_provider": true,
       "project_support_terraform_terragrunt": false,
       "python_version": "3.14",
-      "scalr_env": "scalr",
+      "scalr_env": "devops",
       "scalr_workspace": "terraform_provider_sshkey",
-      "_copy_without_render": ["charts/README.md.gotmpl"],
+      "_copy_without_render": [
+        "charts/README.md.gotmpl"
+      ],
       "_go_app_name": "goer",
       "_template": "https://github.com/jlec/cookiecutter-general.git",
       "_commit": "8c33bb58548e1db6b6b028ee325cb1c6dd0d0958"
