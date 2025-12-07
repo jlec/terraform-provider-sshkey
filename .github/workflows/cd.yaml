@@ -24,7 +24,6 @@ jobs:
     secrets:
       pat: ${{ secrets.PAT_GITHUB_TOKEN }}
       github-token: ${{ secrets.GITHUB_TOKEN }}
-      scalr_release_token: ${{ secrets.SCALR_RELEASE_KEY }}
       gpg_release_key: ${{ secrets.GPG_RELEASE_KEY }}
   release-and-clean:
     name: Release the code & clean up

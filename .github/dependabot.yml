@@ -8,33 +8,6 @@ updates:
     open-pull-requests-limit: 8
     assignees:
       - "jlec"
-  #   - package-ecosystem: "devcontainers"
-  #     directory: "/"
-  #     schedule:
-  #       interval: "weekly"
-  #     open-pull-requests-limit: 8
-  #
-  #     assignees:
-  #       - "jlec"
-  #
-  #   - package-ecosystem: "docker"
-  #     directory: "/"
-  #     schedule:
-  #       interval: "weekly"
-  #     open-pull-requests-limit: 8
-  #
-  #     assignees:
-  #       - "jlec"
-  #
-  #   - package-ecosystem: "docker-compose"
-  #     directory: "/"
-  #     schedule:
-  #       interval: "weekly"
-  #     open-pull-requests-limit: 8
-  #
-  #     assignees:
-  #       - "jlec"
-  #
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
@@ -65,8 +38,3 @@ updates:
     open-pull-requests-limit: 8
     assignees:
       - "jlec"
-registries:
-  terraform-jlec:
-    type: terraform-registry
-    url: https://jlec.scalr.io/
-    token: ${{ secrets.SCALR_TOKEN_DEPENDABOT }}
