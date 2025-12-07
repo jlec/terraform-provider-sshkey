@@ -1,12 +1,11 @@
 {
   "checkout": null,
-  "commit": "8c33bb58548e1db6b6b028ee325cb1c6dd0d0958",
+  "commit": "b5675f4085e2f99976653bf45c1bdd1354ea44a3",
   "context": {
     "cookiecutter": {
       "email": "justin@jlec.de",
       "full_name": "Justin Lecher",
       "github_owner": "jlec",
-      "github_username": "jlec",
       "github_repo": "terraform-provider-sshkey",
       "project_name": "sshkey TF provider",
       "project_short_description": "sshkey TF provider",
@@ -35,7 +34,7 @@
       ],
       "_go_app_name": "goer",
       "_template": "https://github.com/jlec/cookiecutter-general.git",
-      "_commit": "8c33bb58548e1db6b6b028ee325cb1c6dd0d0958"
+      "_commit": "b5675f4085e2f99976653bf45c1bdd1354ea44a3"
     }
   },
   "directory": null,
