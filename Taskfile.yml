@@ -12,7 +12,7 @@ env:
   PY_RUNNER: uv run
   TF_NAMESPACE: dev
   TF_TYPE: sshkey
-  TF_VERSION: "0.1.12"
+  TF_VERSION: "0.1.13"
 
 tasks:
   default:
