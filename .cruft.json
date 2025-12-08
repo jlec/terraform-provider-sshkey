@@ -1,6 +1,6 @@
 {
   "checkout": null,
-  "commit": "b5675f4085e2f99976653bf45c1bdd1354ea44a3",
+  "commit": "cefaba186b768ca28c1bd24e5d2fbc29f128b1f8",
   "context": {
     "cookiecutter": {
       "email": "justin@jlec.de",
@@ -29,12 +29,10 @@
       "python_version": "3.14",
       "scalr_env": "devops",
       "scalr_workspace": "terraform_provider_sshkey",
-      "_copy_without_render": [
-        "charts/README.md.gotmpl"
-      ],
+      "_copy_without_render": ["charts/README.md.gotmpl"],
       "_go_app_name": "goer",
       "_template": "https://github.com/jlec/cookiecutter-general.git",
-      "_commit": "b5675f4085e2f99976653bf45c1bdd1354ea44a3"
+      "_commit": "cefaba186b768ca28c1bd24e5d2fbc29f128b1f8"
     }
   },
   "directory": null,

@@ -17,7 +17,7 @@ jobs:
     name: "GO Releaser"
     if: >-
       startsWith(github.event.head_commit.message, 'bump:')
-    uses: jlec/github-actions/.github/workflows/reusable-cd-go.yml@main
+    uses: jlec/github-actions/.github/workflows/reusable-cd-tf-provider.yml@main
     permissions:
       contents: write
       statuses: write
