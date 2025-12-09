@@ -163,6 +163,10 @@ repos:
       #     - --args=--skip-rules="AC_AWS_0207"
       #     - --args=--verbose
       #   stages: ["pre-push"]
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.12.0
+    hooks:
+      - id: hadolint
   - repo: https://github.com/gitguardian/ggshield
     rev: "v1.45.0"
     hooks:

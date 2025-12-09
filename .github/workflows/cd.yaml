@@ -7,16 +7,14 @@ on:
   workflow_dispatch:
 
   push:
-    branches:
-      - main
+    tags:
+      - "*"
 
 permissions: read-all
 
 jobs:
   goreleaser:
     name: "GO Releaser"
-    if: >-
-      startsWith(github.event.head_commit.message, 'bump:')
     uses: jlec/github-actions/.github/workflows/reusable-cd-tf-provider.yml@main
     permissions:
       contents: write
@@ -27,8 +25,6 @@ jobs:
       gpg_release_key: ${{ secrets.GPG_RELEASE_KEY }}
   release-and-clean:
     name: Release the code & clean up
-    if: >-
-      startsWith(github.event.head_commit.message, 'bump:')
     runs-on: ubuntu-latest
     permissions:
       contents: write
