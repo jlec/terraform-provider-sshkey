@@ -42,6 +42,11 @@ import (
 var version string // goreleaser can also pass the specific commit if you want
 // commit  string = ""
 
+const (
+	// providerName is the name of the provider.
+	tfeProviderName = "registry.terraform.io/jlec/sshkey"
+)
+
 func main() {
 	var debug bool
 
@@ -54,8 +59,7 @@ func main() {
 	flag.Parse()
 
 	opts := providerserver.ServeOpts{
-		// TODO: Update this string with the published name of your provider.
-		Address: "registry.terraform.io/providers/jlec/sshkey",
+		Address: tfeProviderName,
 		Debug:   debug,
 	}
 
