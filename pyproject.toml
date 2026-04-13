@@ -13,7 +13,7 @@ email = "justin@jlec.de"
 
 [dependency-groups]
 dev = [
-  "bpython>=0.25",
+  "bpython>=0.26",
   "ptpython>=3.0.31",
   "pytest>=8.3.5",
   "pytest-asyncio>=1.2.0",
