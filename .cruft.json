@@ -1,6 +1,6 @@
 {
   "checkout": null,
-  "commit": "4926d61281a7be30460e34696be947b6b09a9d71",
+  "commit": "f89a73c77c9af40d1b836d72739fc8362439cfbb",
   "context": {
     "cookiecutter": {
       "email": "justin@jlec.de",
@@ -14,7 +14,11 @@
       "project_support_ansible_collection": false,
       "project_support_ansible_playbook": false,
       "project_support_ansible_role": false,
+      "project_support_docker": false,
       "project_support_golang": true,
+      "project_support_rust": false,
+      "project_support_rust_bin": false,
+      "project_support_rust_lib": false,
       "project_support_kubernetes": false,
       "project_support_packer": false,
       "project_support_python": false,
@@ -22,17 +26,21 @@
       "project_support_python_script": false,
       "project_support_python_ai": false,
       "project_support_python_ds": false,
+      "project_support_js": false,
       "project_support_terraform": true,
       "project_support_terraform_module": false,
       "project_support_terraform_provider": true,
       "project_support_terraform_terragrunt": false,
+      "go_version": "1.25",
       "python_version": "3.14",
       "scalr_env": "devops",
       "scalr_workspace": "terraform_provider_sshkey",
-      "_copy_without_render": ["charts/README.md.gotmpl"],
+      "_copy_without_render": [
+        "charts/README.md.gotmpl"
+      ],
       "_go_app_name": "goer",
       "_template": "https://github.com/jlec/cookiecutter-general.git",
-      "_commit": "4926d61281a7be30460e34696be947b6b09a9d71"
+      "_commit": "f89a73c77c9af40d1b836d72739fc8362439cfbb"
     }
   },
   "directory": null,

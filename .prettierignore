@@ -1,5 +1,4 @@
 .ansible
-.pre-commit-trivy-cache
 .pytest_cache
 .ruff_cache
 .terraform

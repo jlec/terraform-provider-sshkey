@@ -8,7 +8,7 @@ on:
 
   push:
     tags:
-      - "*"
+      - "v*"
 
 permissions: read-all
 
@@ -16,11 +16,12 @@ jobs:
   goreleaser:
     name: "GO Releaser"
     uses: jlec/github-actions/.github/workflows/reusable-cd-tf-provider.yml@main
+
     permissions:
       contents: write
       statuses: write
     secrets:
-      pat: ${{ secrets.PAT_GITHUB_TOKEN }}
+      pat: ${{ secrets.GHA_PAT }}
       github-token: ${{ secrets.GITHUB_TOKEN }}
       gpg_release_key: ${{ secrets.GPG_RELEASE_KEY }}
   release-and-clean:
@@ -38,9 +39,8 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.ref_name }}
       - name: Cleanup action status
-        uses: ouzi-dev/commit-status-updater@v2
+        uses: myrotvorets/set-commit-status-action@v2.0.1
         with:
           status: "success"
           token: ${{ secrets.GITHUB_TOKEN }}
-          name: "GithubActions - ${GITHUB_WORKFLOW}"
-          ignoreForks: true
+          context: "GithubActions - ${GITHUB_WORKFLOW}"

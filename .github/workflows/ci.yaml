@@ -29,24 +29,24 @@ jobs:
       !startsWith(github.event.head_commit.message, 'WIP')
     name: "Run Linting against all files"
     uses: jlec/github-actions/.github/workflows/reusable-linting.yml@main
-    secrets:
-      github-token: ${{ secrets.GITHUB_TOKEN }}
+    secrets: inherit
+    with:
+      ansible-support: false
   go-build-test:
     name: "GO Build & Test"
     if: >-
-      ${{ github.actor != 'dependabot[bot]' }} &&
+      github.actor != 'dependabot[bot]' &&
       !startsWith(github.event.head_commit.message, 'bump:') &&
       !startsWith(github.event.head_commit.message, 'WIP')
     needs:
       - linting
     uses: jlec/github-actions/.github/workflows/reusable-ci-go.yml@main
-    secrets:
-      pat: ${{ secrets.PAT_GITHUB_TOKEN }}
+    secrets: inherit
 
   dependabot:
     name: "Handle dependabot PR"
     if: >-
-      ${{ github.actor == 'dependabot[bot]' }} &&
+      github.actor == 'dependabot[bot]' &&
       !startsWith(github.event.head_commit.message, 'bump:') &&
       !startsWith(github.event.head_commit.message, 'WIP')
     needs:
@@ -55,15 +55,16 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    secrets:
-      github-token: ${{ secrets.GITHUB_TOKEN }}
+    secrets: inherit
 
   ci-generic:
     name: "Run generic CI"
     if: >-
-      ${{ github.actor != 'dependabot[bot]' }} &&
+      always() &&
+      github.actor != 'dependabot[bot]' &&
       !startsWith(github.event.head_commit.message, 'bump:') &&
-      !startsWith(github.event.head_commit.message, 'WIP')
+      !startsWith(github.event.head_commit.message, 'WIP') &&
+      needs.linting.result == 'success'
     needs:
       - go-build-test
       - dependabot
@@ -72,25 +73,23 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    secrets:
-      pat: ${{ secrets.PAT_GITHUB_TOKEN }}
-      github-token: ${{ secrets.GITHUB_TOKEN }}
+    secrets: inherit
 
   ci-release:
     name: "Run Release CI"
     if: >-
-      ${{ github.actor != 'dependabot[bot]' }} &&
+      always() &&
+      github.actor != 'dependabot[bot]' &&
       !startsWith(github.event.head_commit.message, 'bump:') &&
-      !startsWith(github.event.head_commit.message, 'WIP')
+      !startsWith(github.event.head_commit.message, 'WIP') &&
+      needs.ci-generic.result == 'success'
     needs:
       - ci-generic
     uses: jlec/github-actions/.github/workflows/reusable-ci-release.yml@main
     permissions:
       contents: write
       pull-requests: write
-    secrets:
-      pat: ${{ secrets.PAT_GITHUB_TOKEN }}
-      github-token: ${{ secrets.GITHUB_TOKEN }}
+    secrets: inherit
     with:
       licensed-files: |-
         LICENSE

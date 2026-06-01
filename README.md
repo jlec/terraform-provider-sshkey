@@ -1,6 +1,6 @@
 # terraform_provider_sshkey
 
-TF provider to generate ssh keys
+sshkey TF provider
 
 ## License
 

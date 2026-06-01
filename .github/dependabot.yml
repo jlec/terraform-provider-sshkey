@@ -8,7 +8,21 @@ updates:
     open-pull-requests-limit: 8
     assignees:
       - "jlec"
+  - package-ecosystem: "pre-commit"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 8
+    assignees:
+      - "jlec"
   - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 8
+    assignees:
+      - "jlec"
+  - package-ecosystem: "uv"
     directory: "/"
     schedule:
       interval: "weekly"
@@ -23,10 +37,11 @@ updates:
     open-pull-requests-limit: 8
     assignees:
       - "jlec"
-  - package-ecosystem: "uv"
-    directory: "/"
+  - package-ecosystem: "opentofu"
+    directory: "/deployment"
     schedule:
       interval: "weekly"
+    registries: "*"
     open-pull-requests-limit: 8
     assignees:
       - "jlec"

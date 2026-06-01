@@ -1,24 +1,6 @@
 ---
-formatters:
-  enable:
-    - gci
-    - gofmt
-    - gofumpt
-    - goimports
-  exclusions:
-    generated: lax
-    paths:
-      - third_party$
-      - builtin$
-      - examples$
+version: "2"
 linters:
-  disable:
-    - depguard
-    - exhaustive
-    - exhaustruct
-    - forbidigo
-    - gochecknoinits
-    - godox
   enable:
     - asasalint
     - asciicheck
@@ -34,6 +16,7 @@ linters:
     - dupl
     - dupword
     - durationcheck
+    - embeddedstructfieldcheck
     - err113
     - errchkjson
     - errname
@@ -41,6 +24,7 @@ linters:
     - exptostd
     - fatcontext
     - forcetypeassert
+    - funcorder
     - funlen
     - ginkgolinter
     - gocheckcompilerdirectives
@@ -50,10 +34,11 @@ linters:
     - goconst
     - gocritic
     - gocyclo
+    - godoclint
     - godot
     - goheader
     - gomoddirectives
-    - gomodguard
+    - gomodguard_v2
     - goprintffuncname
     - gosec
     - gosmopolitan
@@ -63,6 +48,7 @@ linters:
     - inamedparam
     - interfacebloat
     - intrange
+    - iotamixing
     - ireturn
     - lll
     - loggercheck
@@ -71,6 +57,7 @@ linters:
     - mirror
     - misspell
     - mnd
+    - modernize
     - musttag
     - nakedret
     - nestif
@@ -79,6 +66,7 @@ linters:
     - nilnil
     - nlreturn
     - noctx
+    - noinlineerr
     - nolintlint
     - nonamedreturns
     - nosprintfhostport
@@ -113,21 +101,13 @@ linters:
     - wrapcheck
     - wsl_v5
     - zerologlint
-  exclusions:
-    generated: lax
-    paths:
-      - third_party$
-      - builtin$
-      - examples$
-    presets:
-      - comments
-      - common-false-positives
-      - legacy
-      - std-error-handling
-    rules:
-      - linters:
-          - dupl
-        path: internal/provider
+  disable:
+    - depguard
+    - exhaustive
+    - exhaustruct
+    - forbidigo
+    - gochecknoinits
+    - godox
   settings:
     lll:
       line-length: 128
@@ -142,8 +122,26 @@ linters:
         - s string
         - T any
         - t testing.T
-    wsl_v5:
-      allow-first-in-block: true
-      allow-whole-block: false
-      branch-max-lines: 2
-version: "2"
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  enable:
+    - gci
+    - gofmt
+    - gofumpt
+    - goimports
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$

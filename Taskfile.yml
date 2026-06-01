@@ -4,15 +4,15 @@
 version: "3"
 
 env:
-  GO_NAME: sshkey
+  GO_NAME: goer
   GO_RUNNER: go
   GOOS: darwin
   GOARCH: arm64
   PY_PM: uv
   PY_RUNNER: uv run
   TF_NAMESPACE: dev
-  TF_TYPE: sshkey
-  TF_VERSION: "0.2.1"
+  TF_TYPE: goer
+  TF_VERSION: "0.1.2"
 
 tasks:
   default:
@@ -29,6 +29,7 @@ tasks:
     cmds:
       - task: setup-python
       - task: setup-pre-commit
+      - cmd: rm -vf .git/hooks/*legacy
 
   setup-python:
     desc: Setup Python environment including dev dependencies
@@ -38,10 +39,10 @@ tasks:
   setup-pre-commit:
     desc: Setup Pre-Commit environment
     cmds:
-      - cmd: $PY_RUNNER pre-commit install
-      - cmd: $PY_RUNNER pre-commit install --install-hooks
-      - cmd: $PY_RUNNER pre-commit install --hook-type commit-msg
-      - cmd: $PY_RUNNER pre-commit install --hook-type pre-push
+      - cmd: prek install
+      - cmd: prek install --install-hooks
+      - cmd: prek install --hook-type commit-msg
+      - cmd: prek install --hook-type pre-push
       - task: ansible-init
 
   ansible-init:
@@ -87,13 +88,13 @@ tasks:
       - cmd: if test -d control; then pushd control >/dev/null && task init && popd; fi
       - cmd: if test -d deployment; then pushd deployment >/dev/null && task init && popd; fi
       - task: prettier
-      - cmd: $PY_RUNNER pre-commit run -a terraform_docs
+      - cmd: prek run -a tofu_docs
       - cmd: git stash list | grep -q cruft-update && git stash pop >/dev/null || true
 
   cruft-push:
     desc: Push the cookies
     cmds:
-      - cmd: 'git ci -a -m "chore(cruft): update to latest cruft state"'
+      - cmd: "git ci -a -m \"chore(cruft): update to latest cruft state\""
 
   cruft-reset:
     desc: Reset cruft
@@ -109,6 +110,8 @@ tasks:
     desc: Run prettier
     cmds:
       - cmd: prettier -w .
+      - cmd: yamlfmt .
+      - cmd: biome format --fix .
   check:
     desc: Run pre-commit
     deps:
@@ -125,9 +128,9 @@ tasks:
   pre-commit:
     desc: Run pre-commit
     cmds:
-      - cmd: $PY_RUNNER pre-commit run --hook-stage commit --all-files
-      - cmd: $PY_RUNNER pre-commit run --hook-stage push --all-files
-      - cmd: $PY_RUNNER pre-commit run --hook-stage manual --all-files
+      - cmd: prek run --stage pre-commit --all-files
+      - cmd: prek run --stage pre-push --all-files
+      - cmd: prek run --stage manual --all-files
 
   test:
     desc: Run pytest
@@ -198,7 +201,7 @@ tasks:
         ignore_error: true
       - cmd: prettier -w docs
         ignore_error: true
-      - cmd: pre-commit run -a terraform_docs
+      - cmd: pre-commit run -a tofu_docs
         ignore_error: true
 
   ghost:
