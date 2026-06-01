@@ -110,7 +110,7 @@ repos:
       - id: golangci-lint-full
         args: ["--timeout", "2m"]
   - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-    rev: "v2.15.0"
+    rev: "v2.16.0"
     hooks:
       - id: pretty-format-golang
         args: [--autofix]
