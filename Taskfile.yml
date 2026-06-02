@@ -28,7 +28,7 @@ tasks:
     desc: Setup environment
     cmds:
       - task: setup-python
-      - task: setup-pre-commit
+      - task: setup-prek
       - cmd: rm -vf .git/hooks/*legacy
 
   setup-python:
@@ -36,8 +36,8 @@ tasks:
     cmds:
       - cmd: $PY_PM sync --upgrade --dev
 
-  setup-pre-commit:
-    desc: Setup Pre-Commit environment
+  setup-prek:
+    desc: Setup prek environment
     cmds:
       - cmd: prek install
       - cmd: prek install --install-hooks
@@ -113,20 +113,20 @@ tasks:
       - cmd: yamlfmt .
       - cmd: biome format --fix .
   check:
-    desc: Run pre-commit
+    desc: Run prek
     deps:
       - lint
   lint:
-    desc: Run pre-commit
+    desc: Run prek
     deps:
       - linting
   linting:
-    desc: Run pre-commit
+    desc: Run prek
     cmds:
-      - task: pre-commit
+      - task: prek
 
-  pre-commit:
-    desc: Run pre-commit
+  prek:
+    desc: Run prek
     cmds:
       - cmd: prek run --stage pre-commit --all-files
       - cmd: prek run --stage pre-push --all-files
@@ -146,6 +146,14 @@ tasks:
   # GOLANG options
   #
   #############################################################################
+  go-build:
+    desc: Build Go binaries
+    sources:
+      - "./**/*.go"
+    cmds:
+      - cmd: go build -o bin/${GO_NAME} ./cmd/${GO_NAME}
+      - cmd: go build -o bin/${GO_NAME}-test ./cmd/${GO_NAME}-test
+
   go-fmt:
     desc: Runs gofumpt
     sources:
@@ -190,18 +198,23 @@ tasks:
       - cmd: go mod vendor
       - cmd: go vet ./...
 
+  go-vuln:
+    desc: Check for known vulnerabilities in dependencies
+    cmds:
+      - cmd: govulncheck ./...
+
   go-generate:
     desc: Generate GO docs and stuff
     cmds:
       - cmd: go mod vendor
       - cmd: go generate ./...
-      - cmd: pre-commit run -a end-of-file-fixer
+      - cmd: prek run -a end-of-file-fixer
         ignore_error: true
-      - cmd: pre-commit run -a trailing-whitespace
+      - cmd: prek run -a trailing-whitespace
         ignore_error: true
       - cmd: prettier -w docs
         ignore_error: true
-      - cmd: pre-commit run -a tofu_docs
+      - cmd: prek run -a tofu_docs
         ignore_error: true
 
   ghost:

@@ -71,3 +71,6 @@ rules:
     level: error
     ignore: |
       .yamllint
+  quoted-strings:
+    quote-type: "double"
+    required: false

@@ -40,6 +40,7 @@ import (
 //
 //go:embed VERSION
 var version string // goreleaser can also pass the specific commit if you want
+
 // commit  string = ""
 
 const (

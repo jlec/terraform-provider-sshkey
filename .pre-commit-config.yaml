@@ -25,6 +25,13 @@ repos:
       - id: commitizen
         stages:
           - commit-msg
+  - repo: https://github.com/biomejs/pre-commit
+    rev: v0.6.1
+    hooks:
+      - id: biome-check
+      - id: biome-ci
+      - id: biome-format
+      - id: biome-lint
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: "v6.0.0"
     hooks:
@@ -97,7 +104,7 @@ repos:
       - id: tombi-format
       - id: tombi-lint
   - repo: https://github.com/betterleaks/betterleaks
-    rev: "v1.3.1"
+    rev: "v1.4.0"
     hooks:
       - id: betterleaks
   - repo: https://github.com/python-jsonschema/check-jsonschema
@@ -124,6 +131,7 @@ repos:
       - id: gofumpt # requires github.com/mvdan/gofumpt
       # - id: go-err-check # requires github.com/kisielk/errcheck
       - id: go-static-check # install https://staticcheck.io/docs/
+        args: ["./..."]
         # - id: go-ruleguard # requires https://github.com/quasilyte/go-ruleguard
         #   args: [rules/rules.go] # required
   - repo: https://github.com/tofuutils/pre-commit-opentofu
@@ -133,6 +141,7 @@ repos:
         args:
           - --hook-config=--add-to-existing-file=true
       - id: tofu_fmt
+      - id: tofu_tflint
       - id: tofu_validate
       - id: tofu_providers_lock
         args:

@@ -70,8 +70,8 @@ tasks:
     desc: "SSH into the instance"
     cmds:
       - >
-          ssh
-          -l $(${TERRAFORM_EXEC} output -json | jq -r '.ssh_user.value')
-          -i $(${TERRAFORM_EXEC} output -json | jq -r '.ssh_key.value')
-          $(${TERRAFORM_EXEC} output -json | jq -r '.IPv4.value[0]')
+        ssh
+        -l $(${TERRAFORM_EXEC} output -json | jq -r '.ssh_user.value')
+        -i $(${TERRAFORM_EXEC} output -json | jq -r '.ssh_key.value')
+        $(${TERRAFORM_EXEC} output -json | jq -r '.IPv4.value[0]')
     interactive: true
