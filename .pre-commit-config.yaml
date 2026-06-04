@@ -127,7 +127,7 @@ repos:
         # - id: go-ruleguard # requires https://github.com/quasilyte/go-ruleguard
         #   args: [rules/rules.go] # required
   - repo: https://github.com/tofuutils/pre-commit-opentofu
-    rev: "v2.4.0"
+    rev: "v2.4.1"
     hooks:
       - id: tofu_docs
         args:
